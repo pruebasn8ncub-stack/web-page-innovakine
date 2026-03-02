@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 import { Lock, Mail, ArrowRight, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,17 +23,30 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
         setLoading(true);
         setError(null);
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        try {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://187.77.229.36:3000';
+            const response = await fetch(`${API_URL}/api/v1/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-        if (error) {
-            setError(error.message);
-            setLoading(false);
-        } else {
+            const data = await response.json();
+
+            if (!response.ok) {
+                setError(data.message || "Credenciales incorrectas");
+                setLoading(false);
+                return;
+            }
+
+            // Opcional: Podrías guardar el token en localStorage/cookies aquí
+            // localStorage.setItem("token", data.data.token);
+
             onClose();
             router.push("/admin/dashboard");
+        } catch (err: any) {
+            setError(err.message || "Error de red al intentar iniciar sesión");
+            setLoading(false);
         }
     };
 

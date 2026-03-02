@@ -116,7 +116,8 @@ export default function ProfessionalsPage() {
             }
 
             // Use the API route to create the user
-            const res = await fetch('/api/v1/create-professional', {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://187.77.229.36:3000';
+            const res = await fetch(`${API_URL}/api/v1/create-professional`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
