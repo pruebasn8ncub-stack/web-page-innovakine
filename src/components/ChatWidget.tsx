@@ -179,7 +179,7 @@ export function ChatWidget() {
 
                                 {/* Direct to WhatsApp Banner */}
                                 <a
-                                    href="https://wa.me/56930186496"
+                                    href="https://wa.me/56930186496?text=Hola%2C%20quiero%20agendar%20una%20consulta%20en%20Innovakine.%20%C2%BFTienen%20disponibilidad%20esta%20semana%3F"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="relative z-10 w-full bg-[#F0F2F5] hover:bg-[#E2E5E9] text-[#075E54] text-[13px] py-2 px-3 flex items-center justify-center gap-2 border-b border-gray-200 transition-colors font-semibold"
