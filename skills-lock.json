@@ -11,6 +11,16 @@
       "sourceType": "github",
       "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
     },
+    "image-remove-background": {
+      "source": "agntswrm/agent-media",
+      "sourceType": "github",
+      "computedHash": "d16c5528e1085b9fb8624d2d5499562c3acae6e76e6b934c03dd6b452251fd5e"
+    },
+    "image-upscaling": {
+      "source": "inference-sh-9/skills",
+      "sourceType": "github",
+      "computedHash": "9ae167a25ccf6fa24739aba7b28c4991f0c32462299652aa772748a71c24ee9f"
+    },
     "nextjs-app-router-patterns": {
       "source": "wshobson/agents",
       "sourceType": "github",

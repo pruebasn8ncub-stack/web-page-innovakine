@@ -11,14 +11,14 @@ export function Team() {
             role: "Kinesióloga · Esp. Medicina Hiperbárica",
             bio: "Kinesióloga con trayectoria en medicina hiperbárica y rehabilitación funcional. Especialista en el uso terapéutico del oxígeno hiperbárica para acelerar la regeneración de tejidos y tratar condiciones crónicas complejas.",
             badges: ["Directora Clínica", "U. de Chile"],
-            imgUrl: "https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/Kinesiologas_innovakine2.jpeg"
+            imgUrl: "/images/Kinesiologas_innovakine2.jpeg"
         },
         {
             name: "Camila Alvarado Barrera",
             role: "Kinesióloga · Esp. Rehabilitación Deportiva",
             bio: "Experta en el reintegro deportivo y recuperación post-quirúrgica. Integra avanzadas técnicas de terapia manual con oxigenoterapia para optimizar el rendimiento y bienestar de sus pacientes.",
             badges: ["Medicina Deportiva", "PUC"],
-            imgUrl: "https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/kinesiologas_innovakine.png"
+            imgUrl: "/images/kinesiologas_innovakine.png"
         }
     ];
 

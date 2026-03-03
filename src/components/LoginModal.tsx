@@ -81,7 +81,7 @@ export function LoginModal({ isOpen, onClose }: LoginModalProps) {
                                 <div className="mb-8 flex justify-center">
                                     <div className="bg-white p-3 rounded-2xl shadow-xl">
                                         <Image
-                                            src="https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/logo_innovakine.jpg"
+                                            src="/images/logo_innovakine.png"
                                             alt="Innovakine Logo"
                                             width={150}
                                             height={40}

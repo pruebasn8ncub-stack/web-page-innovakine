@@ -33,7 +33,7 @@ export function Header() {
     return (
         <header
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white border-b border-border",
+                "fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-lg border-b border-border",
                 isScrolled ? "py-2 lg:py-3 shadow-md" : "py-3 lg:py-5"
             )}
         >
@@ -43,10 +43,10 @@ export function Header() {
                     <div className="transition-all duration-500 flex items-center justify-center p-1 lg:p-2">
                         <div className={cn(
                             "relative transition-all duration-500",
-                            isScrolled ? "h-8 w-28 lg:h-10 lg:w-36" : "h-10 w-32 lg:h-12 lg:w-44 lg:group-hover:scale-105"
+                            isScrolled ? "h-9 w-32 lg:h-11 lg:w-44" : "h-12 w-40 lg:h-14 lg:w-52 lg:group-hover:scale-105"
                         )}>
                             <Image
-                                src="https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/logo_innovakine.jpg"
+                                src="/images/logo_innovakine.png"
                                 alt="Innovakine Logo"
                                 fill
                                 className="object-contain"

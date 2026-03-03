@@ -38,9 +38,10 @@ export function About() {
                     >
                         <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-bg-main aspect-[4/3]">
                             <Image
-                                src="https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/Kinesiologas_innovakine2.jpeg"
+                                src="/images/Kinesiologas_innovakine2.jpeg"
                                 alt="Kinesiólogas de Innovakine en sesión"
                                 fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
                                 className="object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent flex items-end p-6 lg:p-12">

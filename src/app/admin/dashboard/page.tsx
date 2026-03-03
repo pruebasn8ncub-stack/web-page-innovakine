@@ -84,7 +84,7 @@ export default function AdminDashboard() {
                     <div className="flex items-center gap-6">
                         <div className="bg-white p-2.5 rounded-2xl shadow-xl">
                             <Image
-                                src="https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/logo_innovakine.jpg"
+                                src="/images/logo_innovakine.png"
                                 alt="Innovakine Logo"
                                 width={140}
                                 height={40}

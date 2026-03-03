@@ -16,21 +16,21 @@ export function Services() {
             title: "Oxigenoterapia Hiperbárica",
             description: "Respirar oxígeno puro al 100% en cámara presurizada eleva su concentración en sangre hasta 15 veces, acelerando la regeneración celular y reduciendo inflamación.",
             tags: ["Recuperación deportiva", "Heridas crónicas"],
-            imgUrl: "https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/Camara_hiperbarica.png",
+            imgUrl: "/images/Camara_hiperbarica.png",
             wsLink: "https://wa.me/56930186496?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20la%20Oxigenoterapia%20Hiperb%C3%A1rica."
         },
         {
             title: "Rehabilitación Kinesiológica",
             description: "Evaluación biomecánica completa con diseño de plan terapéutico individualizado. Terapia manual, ejercicio terapéutico y agentes físicos especializados.",
             tags: ["Dolor musculoesquelético", "Lesiones articulares"],
-            imgUrl: "https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/Tratamiento_kinesiologico.png",
+            imgUrl: "/images/Tratamiento_kinesiologico.png",
             wsLink: "https://wa.me/56930186496?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Rehabilitaci%C3%B3n%20Kinesiológica."
         },
         {
             title: "Recuperación Deportiva",
             description: "Rehabilitación progresiva para deportistas. Combinamos kinesiología y terapia hiperbárica para reducir tiempos de recuperación drásticamente.",
             tags: ["Post-quirúrgico", "Lesiones deportivas"],
-            imgUrl: "https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/Rehabilitacion_deportiva.png",
+            imgUrl: "/images/Rehabilitacion_deportiva.png",
             wsLink: "https://wa.me/56930186496?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Recuperaci%C3%B3n%20Deportiva."
         }
     ];

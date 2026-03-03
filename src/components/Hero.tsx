@@ -74,9 +74,10 @@ export function Hero() {
                         <div className="relative z-10 rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border-[4px] lg:border-[8px] border-white/10 backdrop-blur-2xl transition-transform hover:scale-[1.01] duration-700">
                             <div className="relative aspect-[4/5] w-full">
                                 <Image
-                                    src="https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/Kinesiologas_innovakine2.jpeg"
+                                    src="/images/Kinesiologas_innovakine2.jpeg"
                                     alt="Equipo de Innovakine atendiendo pacientes"
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-cover"
                                     priority
                                 />

@@ -15,13 +15,13 @@ export function Footer() {
 
                     <div className="lg:col-span-4">
                         <Link href="/" className="inline-block mb-8 group">
-                            <div className="bg-white p-2.5 rounded-2xl shadow-xl transition-transform group-hover:scale-105">
+                            <div className="transition-transform group-hover:scale-105">
                                 <Image
-                                    src="https://svtbqdpulegufprcnppi.supabase.co/storage/v1/object/public/innovakine/logo_innovakine.jpg"
+                                    src="/images/logo_innovakine.png"
                                     alt="Innovakine Logo"
                                     width={180}
                                     height={50}
-                                    className="h-auto w-40"
+                                    className="h-auto w-40 brightness-0 invert"
                                 />
                             </div>
                         </Link>

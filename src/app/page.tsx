@@ -8,7 +8,7 @@ import { Location } from "@/components/Location";
 import { FAQ } from "@/components/FAQ";
 import { BookingForm } from "@/components/BookingForm";
 import { Footer } from "@/components/Footer";
-import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { ChatWidget } from "@/components/ChatWidget";
 
 export default function Home() {
   return (
@@ -25,7 +25,7 @@ export default function Home() {
         <BookingForm />
       </main>
       <Footer />
-      <FloatingWhatsApp />
+      <ChatWidget />
     </div>
   );
 }
