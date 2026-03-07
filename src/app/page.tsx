@@ -12,6 +12,7 @@ const FAQ = dynamic(() => import('@/components/FAQ').then(mod => mod.FAQ));
 const BookingForm = dynamic(() => import('@/components/BookingForm').then(mod => mod.BookingForm));
 const Footer = dynamic(() => import('@/components/Footer').then(mod => mod.Footer));
 const ChatWidget = dynamic(() => import('@/components/ChatWidget').then(mod => mod.ChatWidget));
+const InstagramFeed = dynamic(() => import('@/components/InstagramFeed').then(mod => mod.InstagramFeed));
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <Location />
         <FAQ />
         <BookingForm />
+        <InstagramFeed />
       </main>
       <Footer />
       <ChatWidget />
