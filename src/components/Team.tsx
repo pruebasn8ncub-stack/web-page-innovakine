@@ -29,7 +29,7 @@ export function Team() {
             bio: "Profesional orientada a la recuperación integral de sus pacientes. Especializada en Fisiología Clínica del Ejercicio, destaca por su empatía y sólida experiencia en rehabilitación y trabajo interdisciplinario.",
             badges: ["Diplomada UChile", "Kinesiología"],
             imgUrl: "/images/camila_alvarado.jpg",
-            linkedinUrl: "https://www.linkedin.com/in/camila-alvarado-barrera"
+            linkedinUrl: "https://www.linkedin.com/in/camila-alvarado-barrera-786164248/"
         }
     ];
 
@@ -134,19 +134,6 @@ export function Team() {
                     ))}
                 </div>
 
-                {/* Social proof banner */}
-                <div className="mt-16 lg:mt-24 text-center">
-                    <div className="inline-flex flex-col md:flex-row items-center gap-4 md:gap-6 p-5 md:p-6 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <div className="flex -space-x-4">
-                            {[0, 1].map(i => (
-                                <div key={i} className="h-12 w-12 rounded-full border-2 border-navy bg-gray-200 overflow-hidden">
-                                    <Image src={team[i].imgUrl} alt={team[i].name} width={48} height={48} className="object-cover" />
-                                </div>
-                            ))}
-                        </div>
-                        <p className="text-white font-bold">Únete a cientos de pacientes recuperados</p>
-                    </div>
-                </div>
             </div>
         </section>
     );
