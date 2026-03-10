@@ -875,6 +875,7 @@ function AppointmentFormModal({ onClose, onSuccess }: { onClose: () => void, onS
     const [loadingData, setLoadingData] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isNewPatientModalOpen, setIsNewPatientModalOpen] = useState(false);
 
     const [patients, setPatients] = useState<Patient[]>([]);
     const [services, setServices] = useState<Service[]>([]);
@@ -915,6 +916,19 @@ function AppointmentFormModal({ onClose, onSuccess }: { onClose: () => void, onS
         }
         fetchData();
     }, []);
+
+    // A helper to refresh patients when a new one is created inline
+    const handlePatientCreated = async (newPatientId: string) => {
+        setIsNewPatientModalOpen(false);
+        try {
+            const { data, error } = await supabase.from('patients').select('id, full_name, email, phone').order('full_name');
+            if (error) throw error;
+            setPatients(data || []);
+            setForm(prev => ({ ...prev, patient_id: newPatientId }));
+        } catch (err: any) {
+            console.error("Error refreshing patients:", err);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -998,7 +1012,16 @@ function AppointmentFormModal({ onClose, onSuccess }: { onClose: () => void, onS
                             )}
 
                             <div>
-                                <label className="block text-sm font-bold text-slate-700 mb-1.5">Paciente <span className="text-red-500">*</span></label>
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <label className="block text-sm font-bold text-slate-700">Paciente <span className="text-red-500">*</span></label>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsNewPatientModalOpen(true)}
+                                        className="text-xs font-semibold text-teal hover:text-teal-dark flex items-center gap-1 bg-teal/10 px-2 py-1 rounded"
+                                    >
+                                        <Plus className="w-3 h-3" /> Nuevo Paciente
+                                    </button>
+                                </div>
                                 <select
                                     required
                                     value={form.patient_id}
@@ -1096,7 +1119,134 @@ function AppointmentFormModal({ onClose, onSuccess }: { onClose: () => void, onS
                     </button>
                 </div>
             </div>
+
+            {isNewPatientModalOpen && (
+                <NewPatientModal
+                    onClose={() => setIsNewPatientModalOpen(false)}
+                    onSuccess={handlePatientCreated}
+                />
+            )}
         </div>
     );
 }
 
+// ─── Inline New Patient Modal ───────────────────────────────────────────────
+
+function NewPatientModal({ onClose, onSuccess }: { onClose: () => void, onSuccess: (id: string) => void }) {
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [form, setForm] = useState({
+        full_name: "",
+        rut: "",
+        email: "",
+        phone: "",
+        address: ""
+    });
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        setSaving(true);
+
+        try {
+            if (!form.full_name.trim()) throw new Error("El nombre es requerido.");
+
+            const { data, error: insertError } = await supabase
+                .from('patients')
+                .insert({
+                    full_name: form.full_name,
+                    rut: form.rut || null,
+                    email: form.email || null,
+                    phone: form.phone || null,
+                    address: form.address || null
+                })
+                .select('id')
+                .single();
+
+            if (insertError) throw new Error("Error al crear paciente: " + insertError.message);
+            onSuccess(data.id);
+        } catch (err: any) {
+            setError(err.message);
+            setSaving(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-[210] flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl flex flex-col">
+                <div className="flex items-center justify-between p-5 border-b border-slate-100">
+                    <h2 className="text-lg font-bold text-slate-800">Crear Nuevo Paciente</h2>
+                    <button onClick={onClose} disabled={saving} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                <div className="p-5 overflow-y-auto">
+                    <form id="new-patient-form" onSubmit={handleSubmit} className="space-y-4">
+                        {error && (
+                            <div className="p-3 bg-red-50 text-red-600 border border-red-100 rounded-lg text-sm font-medium">
+                                {error}
+                            </div>
+                        )}
+                        <div>
+                            <label className="block text-xs font-bold text-slate-700 mb-1">Nombre Completo <span className="text-red-500">*</span></label>
+                            <input
+                                required
+                                value={form.full_name}
+                                onChange={e => setForm({ ...form, full_name: e.target.value })}
+                                className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-slate-700 mb-1">RUT (Opcional)</label>
+                            <input
+                                value={form.rut}
+                                onChange={e => setForm({ ...form, rut: e.target.value })}
+                                className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all text-sm"
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-xs font-bold text-slate-700 mb-1">Email <span className="text-slate-400 font-normal">(Opcional)</span></label>
+                                <input
+                                    type="email"
+                                    value={form.email}
+                                    onChange={e => setForm({ ...form, email: e.target.value })}
+                                    className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all text-sm"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-700 mb-1">Teléfono <span className="text-slate-400 font-normal">(Opcional)</span></label>
+                                <input
+                                    value={form.phone}
+                                    onChange={e => setForm({ ...form, phone: e.target.value })}
+                                    className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all text-sm"
+                                />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-2 rounded-b-2xl">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        disabled={saving}
+                        className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-lg transition-all"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        form="new-patient-form"
+                        disabled={saving}
+                        className="px-4 py-2 text-sm font-bold text-white bg-teal focus:ring-2 focus:ring-teal/20 focus:border-teal rounded-lg shadow-sm hover:shadow hover:bg-teal-dark transition-all flex items-center gap-2"
+                    >
+                        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                        {saving ? "Creando..." : "Crear Paciente"}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
