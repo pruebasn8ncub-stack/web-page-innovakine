@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import {
     Loader2, Calendar as CalendarIcon, Clock, User, ChevronLeft, ChevronRight,
     Filter, UserCircle, AlertTriangle, ArrowLeft, List, LayoutGrid, CalendarDays,
-    Activity, ClipboardList, Phone, Mail, Plus, X, Save
+    Activity, ClipboardList, Phone, Mail, Plus, X, Save, Pencil
 } from "lucide-react";
 import {
     format, addDays, subDays, addMonths, subMonths,
@@ -385,6 +385,10 @@ export default function AgendaPage() {
                         setSelectedAppointment(null);
                         fetchAppointments(dateRange.start, dateRange.end);
                     }}
+                    onEdited={(updated) => {
+                        setSelectedAppointment(null);
+                        fetchAppointments(dateRange.start, dateRange.end);
+                    }}
                 />
             )}
 
@@ -720,14 +724,17 @@ function AppointmentDetail({
     appointment: apt,
     onClose,
     onDeleted,
+    onEdited,
 }: {
     appointment: Appointment;
     onClose: () => void;
     onDeleted: () => void;
+    onEdited: (updated: Appointment) => void;
 }) {
     const [isClosing, setIsClosing] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     const handleClose = () => {
         setIsClosing(true);
@@ -770,6 +777,13 @@ function AppointmentDetail({
 
                 <div className={`p-6 pb-2 relative ${textColor}`}>
                     <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
+                        <button
+                            onClick={() => setIsEditOpen(true)}
+                            className={`w-8 h-8 flex items-center justify-center ${textColor} bg-black/20 hover:bg-blue-500 hover:text-white rounded-full transition-colors shadow-sm ring-1 ring-white/20`}
+                            title="Editar cita"
+                        >
+                            <Pencil className="w-4 h-4" />
+                        </button>
                         <button
                             onClick={() => setConfirmDelete(true)}
                             className={`w-8 h-8 flex items-center justify-center ${textColor} bg-black/20 hover:bg-red-500 hover:text-white rounded-full transition-colors shadow-sm ring-1 ring-white/20`}
@@ -921,6 +935,17 @@ function AppointmentDetail({
                 </div>
             )
         }
+
+        {isEditOpen && (
+            <AppointmentEditModal
+                appointment={apt}
+                onClose={() => setIsEditOpen(false)}
+                onSuccess={() => {
+                    setIsEditOpen(false);
+                    onEdited(apt);
+                }}
+            />
+        )}
     </>
     );
 }
@@ -1196,6 +1221,225 @@ function AppointmentFormModal({ onClose, onSuccess }: { onClose: () => void, onS
                     onSuccess={handlePatientCreated}
                 />
             )}
+        </div>
+    );
+}
+
+// ─── Appointment Edit Modal ──────────────────────────────────────────────────
+
+function AppointmentEditModal({ appointment: apt, onClose, onSuccess }: {
+    appointment: Appointment;
+    onClose: () => void;
+    onSuccess: () => void;
+}) {
+    const [loadingData, setLoadingData] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const [patients, setPatients] = useState<Patient[]>([]);
+    const [services, setServices] = useState<Service[]>([]);
+    const [professionals, setProfessionals] = useState<Professional[]>([]);
+
+    const [form, setForm] = useState({
+        patient_id: apt.patient_id || "",
+        service_id: apt.service_id || "",
+        professional_id: apt.appointment_allocations?.[0]?.professional_id || "",
+        date: format(new Date(apt.starts_at), "yyyy-MM-dd"),
+        time: format(new Date(apt.starts_at), "HH:mm"),
+        notes: apt.notes || "",
+    });
+
+    useEffect(() => {
+        async function fetchData() {
+            setLoadingData(true);
+            try {
+                const [ptsRes, srvRes, profRes] = await Promise.all([
+                    supabase.from('patients').select('id, full_name, email, phone').order('full_name'),
+                    supabase.from('services').select('id, name, duration_minutes, color, is_composite').order('name'),
+                    supabase.from('profiles').select('id, full_name').order('full_name'),
+                ]);
+                if (ptsRes.error) throw ptsRes.error;
+                if (srvRes.error) throw srvRes.error;
+                if (profRes.error) throw profRes.error;
+                setPatients(ptsRes.data || []);
+                setServices(srvRes.data || []);
+                setProfessionals(profRes.data || []);
+            } catch (err: any) {
+                setError("Error cargando datos: " + err.message);
+            } finally {
+                setLoadingData(false);
+            }
+        }
+        fetchData();
+    }, []);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        setSaving(true);
+        try {
+            const selectedService = services.find(s => s.id === form.service_id);
+            if (!selectedService) throw new Error("Debes seleccionar un servicio válido.");
+            if (!form.patient_id) throw new Error("Debes seleccionar un paciente.");
+            if (!form.professional_id) throw new Error("Debes seleccionar un profesional.");
+
+            const startDateTime = new Date(`${form.date}T${form.time}:00`);
+            const endDateTime = new Date(startDateTime.getTime() + selectedService.duration_minutes * 60000);
+            if (isNaN(startDateTime.getTime())) throw new Error("Fecha u hora inválida.");
+
+            const { error: aptError } = await supabase
+                .from('appointments')
+                .update({
+                    patient_id: form.patient_id,
+                    service_id: form.service_id,
+                    starts_at: startDateTime.toISOString(),
+                    ends_at: endDateTime.toISOString(),
+                    notes: form.notes || null,
+                })
+                .eq('id', apt.id);
+
+            if (aptError) throw new Error("Error al actualizar cita: " + aptError.message);
+
+            // Update the allocation if professional changed
+            if (apt.appointment_allocations?.[0]) {
+                await supabase
+                    .from('appointment_allocations')
+                    .update({
+                        professional_id: form.professional_id,
+                        starts_at: startDateTime.toISOString(),
+                        ends_at: endDateTime.toISOString(),
+                    })
+                    .eq('appointment_id', apt.id);
+            }
+
+            onSuccess();
+        } catch (err: any) {
+            setError(err.message);
+            setSaving(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/40 p-4">
+            <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
+                <div className="flex items-center justify-between p-6 border-b border-slate-100">
+                    <h2 className="text-xl font-bold text-slate-800">Editar Cita</h2>
+                    <button onClick={onClose} disabled={saving} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
+                    {loadingData ? (
+                        <div className="flex flex-col items-center justify-center py-10">
+                            <Loader2 className="h-8 w-8 text-teal animate-spin mb-4" />
+                            <p className="text-slate-500 font-medium">Cargando datos...</p>
+                        </div>
+                    ) : (
+                        <form id="edit-appointment-form" onSubmit={handleSubmit} className="space-y-4">
+                            {error && (
+                                <div className="p-3 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-medium">{error}</div>
+                            )}
+
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-1.5">Paciente <span className="text-red-500">*</span></label>
+                                <select
+                                    required
+                                    value={form.patient_id}
+                                    onChange={e => setForm({ ...form, patient_id: e.target.value })}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all"
+                                >
+                                    <option value="">-- Seleccionar Paciente --</option>
+                                    {patients.map(p => <option key={p.id} value={p.id}>{p.full_name}</option>)}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-1.5">Servicio principal <span className="text-red-500">*</span></label>
+                                <select
+                                    required
+                                    value={form.service_id}
+                                    onChange={e => setForm({ ...form, service_id: e.target.value })}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all"
+                                >
+                                    <option value="">-- Seleccionar Servicio --</option>
+                                    {services.map(s => <option key={s.id} value={s.id}>{s.name} ({s.duration_minutes} min)</option>)}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-1.5">Profesional asignado <span className="text-red-500">*</span></label>
+                                <select
+                                    required
+                                    value={form.professional_id}
+                                    onChange={e => setForm({ ...form, professional_id: e.target.value })}
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all"
+                                >
+                                    <option value="">-- Seleccionar Profesional --</option>
+                                    {professionals.map(p => <option key={p.id} value={p.id}>{p.full_name}</option>)}
+                                </select>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-1.5">Fecha <span className="text-red-500">*</span></label>
+                                    <input
+                                        type="date"
+                                        required
+                                        value={form.date}
+                                        onChange={e => setForm({ ...form, date: e.target.value })}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-700 mb-1.5">Hora de inicio <span className="text-red-500">*</span></label>
+                                    <input
+                                        type="time"
+                                        required
+                                        value={form.time}
+                                        onChange={e => setForm({ ...form, time: e.target.value })}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-1.5">Notas (Opcional)</label>
+                                <textarea
+                                    rows={3}
+                                    value={form.notes}
+                                    onChange={e => setForm({ ...form, notes: e.target.value })}
+                                    placeholder="Detalles adicionales sobre la cita..."
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal/20 focus:border-teal outline-none transition-all resize-none"
+                                />
+                            </div>
+                        </form>
+                    )}
+                </div>
+
+                <div className="p-6 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3 rounded-b-3xl">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        disabled={saving}
+                        className="px-5 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-xl transition-all"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        form="edit-appointment-form"
+                        disabled={saving || loadingData}
+                        className="px-6 py-2.5 text-sm font-bold text-white bg-teal focus:ring-2 focus:ring-teal/20 focus:border-teal rounded-xl shadow-md hover:shadow-lg hover:bg-teal-dark transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {saving ? (
+                            <><Loader2 className="w-4 h-4 animate-spin" /> Guardando...</>
+                        ) : (
+                            <><Save className="w-4 h-4" /> Guardar Cambios</>
+                        )}
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
