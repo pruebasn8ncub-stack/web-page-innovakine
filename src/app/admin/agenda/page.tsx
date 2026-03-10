@@ -83,18 +83,17 @@ function getBlockStyle(apt: Appointment): { style: React.CSSProperties; classNam
             textClassName: "text-slate-600 line-through decoration-slate-500",
         };
     }
-    if (isOverdue(apt)) {
-        return {
-            style: { backgroundColor: "#fb923c", borderColor: "#f97316", borderLeftWidth: "0px" },
-            className: "",
-            textClassName: "text-slate-800",
-        };
-    }
-    const hex = apt.services?.color || "#00b4a6";
+    const colorVal = apt.services?.color || "bg-teal-500";
+    const isTw = colorVal.startsWith("bg-");
+
     return {
-        style: { backgroundColor: hex, borderColor: "rgba(0,0,0,0.05)", borderLeftWidth: "0px" },
-        className: "",
-        textClassName: "text-slate-800",
+        style: {
+            backgroundColor: isTw ? undefined : colorVal,
+            borderColor: "rgba(0,0,0,0.05)",
+            borderLeftWidth: "0px"
+        },
+        className: isTw ? colorVal : "",
+        textClassName: isTw ? "text-white drop-shadow-sm" : "text-slate-800",
     };
 }
 
@@ -257,13 +256,40 @@ export default function AgendaPage() {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white border border-slate-200 p-4 rounded-[20px] shadow-sm ">
                 <div className="flex flex-wrap items-center gap-2">
                     {viewMode === "day" ? (
-                        <button
-                            onClick={() => setViewMode("month")}
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800 transition-colors text-sm font-semibold"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Volver al Calendario
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => setViewMode("month")}
+                                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal to-blue-500 text-white shadow-md hover:shadow-lg hover:opacity-90 transition-all text-sm font-semibold mr-2"
+                                title="Volver al Mes"
+                            >
+                                <ArrowLeft className="w-4 h-4" />
+                                <span className="hidden sm:inline">Volver al Calendario</span>
+                            </button>
+
+                            <div className="flex bg-slate-100 rounded-xl p-1 border border-slate-200">
+                                <button
+                                    onClick={() => setSelectedDate(prev => subDays(prev, 1))}
+                                    className="p-1.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-slate-500 hover:text-slate-800"
+                                    title="Día anterior"
+                                >
+                                    <ChevronLeft className="w-5 h-5" />
+                                </button>
+                                <button
+                                    onClick={goToToday}
+                                    className="px-3 py-1.5 text-xs font-bold rounded-lg hover:bg-white hover:shadow-sm transition-all text-slate-500 hover:text-teal"
+                                    title="Ir a hoy"
+                                >
+                                    Hoy
+                                </button>
+                                <button
+                                    onClick={() => setSelectedDate(prev => addDays(prev, 1))}
+                                    className="p-1.5 rounded-lg hover:bg-white hover:shadow-sm transition-all text-slate-500 hover:text-slate-800"
+                                    title="Día siguiente"
+                                >
+                                    <ChevronRight className="w-5 h-5" />
+                                </button>
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <button onClick={goBack} className="p-2.5 rounded-xl hover:bg-slate-50 transition-colors text-slate-300 hover:text-slate-800" title="Mes anterior">
@@ -280,9 +306,11 @@ export default function AgendaPage() {
                         </>
                     )}
 
-                    <h2 className="text-xl font-bold text-slate-800 capitalize min-w-[200px] ml-2 tracking-tight">
-                        {dateLabel}
-                    </h2>
+                    {viewMode === "month" && (
+                        <h2 className="text-xl font-bold text-slate-800 capitalize min-w-[200px] ml-2 tracking-tight">
+                            {dateLabel}
+                        </h2>
+                    )}
                 </div>
 
                 {/* Filter */}
@@ -379,11 +407,11 @@ function MonthCalendarView({
     return (
         <div className="h-full flex flex-col overflow-hidden bg-slate-50/50">
             {/* Day Headers */}
-            <div className="grid grid-cols-7 border-b border-navy-light" style={{ background: "linear-gradient(135deg, #0d3d72 0%, #092d55 100%)" }}>
+            <div className="grid grid-cols-7 border-b border-white/20" style={{ background: "linear-gradient(to right, var(--teal), #3b82f6)" }}>
                 {weekDayLabels.map((day, i) => (
                     <div key={day} className="text-center py-3 px-2 border-r border-white/10 last:border-r-0">
-                        <span className="hidden md:inline text-xs text-white/80 font-bold uppercase tracking-widest">{day}</span>
-                        <span className="md:hidden text-xs text-white/80 font-bold uppercase tracking-widest">{weekDayShort[i]}</span>
+                        <span className="hidden md:inline text-xs text-white/90 font-bold uppercase tracking-widest">{day}</span>
+                        <span className="md:hidden text-xs text-white/90 font-bold uppercase tracking-widest">{weekDayShort[i]}</span>
                     </div>
                 ))}
             </div>
@@ -677,7 +705,9 @@ function AppointmentDetail({
     };
 
     const overdue = isOverdue(apt);
-    const serviceColor = apt.services?.color || "#3b82f6";
+    const serviceColorVal = apt.services?.color || "bg-teal-500";
+    const isServiceTw = serviceColorVal.startsWith("bg-");
+    const textColor = isServiceTw ? "text-white" : "text-slate-800";
 
     return (
         <div
@@ -686,20 +716,20 @@ function AppointmentDetail({
             onClick={handleClose}
         >
             <div
-                className={`w-full max-w-md shadow-2xl overflow-hidden rounded-sm duration-200 ease-in-out relative
+                className={`w-full max-w-md shadow-2xl overflow-hidden rounded-sm duration-200 ease-in-out relative ${isServiceTw ? serviceColorVal : ''}
                     ${isClosing ? "animate-out zoom-out-95 opacity-0 scale-95" : "animate-in zoom-in-105 scale-100"}`}
                 onClick={(e) => e.stopPropagation()}
-                style={{ backgroundColor: serviceColor }}
+                style={isServiceTw ? undefined : { backgroundColor: serviceColorVal }}
             >
                 <div className="absolute top-0 right-0 w-8 h-8 bg-white/20 rounded-bl-lg" style={{ boxShadow: "-2px 2px 5px rgba(0,0,0,0.1)" }}></div>
 
-                <div className="p-6 pb-2 relative text-slate-800">
-                    <button onClick={handleClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-slate-800 bg-black/20 hover:bg-black/40 rounded-full transition-colors font-bold text-center z-10 shadow-sm  ring-1 ring-white/20">
+                <div className={`p-6 pb-2 relative ${textColor}`}>
+                    <button onClick={handleClose} className={`absolute top-4 right-4 w-8 h-8 flex items-center justify-center ${textColor} bg-black/20 hover:bg-black/40 rounded-full transition-colors font-bold text-center z-10 shadow-sm  ring-1 ring-white/20`}>
                         &times;
                     </button>
 
                     <div className="flex items-center gap-2 mb-4">
-                        <span className="text-xs font-bold text-slate-800/90 bg-black/10 px-2 py-1 rounded-sm  shadow-sm ring-1 ring-white/20">
+                        <span className={`text-xs font-bold ${isServiceTw ? 'text-white/90' : 'text-slate-800/90'} bg-black/10 px-2 py-1 rounded-sm  shadow-sm ring-1 ring-white/20`}>
                             {format(new Date(apt.starts_at), "dd MMM yy")}
                         </span>
                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-800 px-2 py-1 rounded-sm border border-white/30 bg-slate-50">
@@ -721,22 +751,22 @@ function AppointmentDetail({
 
                 <div className="p-6 pt-4 space-y-3">
                     <div className="grid grid-cols-2 gap-3">
-                        <DetailCard icon={<Clock />} title="Horario" value={`${format(new Date(apt.starts_at), "HH:mm")} - ${format(new Date(apt.ends_at), "HH:mm")}`} />
-                        <DetailCard icon={<UserCircle />} title="Profesional" value={getProfessionalName(apt)} />
+                        <DetailCard textColor={textColor} icon={<Clock />} title="Horario" value={`${format(new Date(apt.starts_at), "HH:mm")} - ${format(new Date(apt.ends_at), "HH:mm")}`} />
+                        <DetailCard textColor={textColor} icon={<UserCircle />} title="Profesional" value={getProfessionalName(apt)} />
                         {getResourceName(apt) && (
-                            <DetailCard icon={<LayoutGrid />} title="Recurso" value={getResourceName(apt)!} />
+                            <DetailCard textColor={textColor} icon={<LayoutGrid />} title="Recurso" value={getResourceName(apt)!} />
                         )}
                         {apt.patients?.phone && (
-                            <DetailCard icon={<Phone />} title="Teléfono" value={apt.patients.phone} />
+                            <DetailCard textColor={textColor} icon={<Phone />} title="Teléfono" value={apt.patients.phone} />
                         )}
                         {apt.patients?.email && (
-                            <DetailCard icon={<Mail />} title="Correo Electrónico" value={apt.patients.email} />
+                            <DetailCard textColor={textColor} icon={<Mail />} title="Correo Electrónico" value={apt.patients.email} />
                         )}
                     </div>
 
                     {apt.services?.is_composite && apt.appointment_allocations && apt.appointment_allocations.length > 0 && (
-                        <div className="bg-black/10 rounded-sm p-4 border border-white/20 mt-4 shadow-inner">
-                            <h4 className="text-xs font-bold text-slate-800/70 uppercase tracking-widest flex items-center gap-2 mb-4">
+                        <div className={`bg-black/10 rounded-sm p-4 border border-white/20 mt-4 shadow-inner ${textColor}`}>
+                            <h4 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 mb-4 opacity-70">
                                 <Activity className="w-4 h-4" /> Desglose de Fases
                             </h4>
                             <div className="flex flex-col gap-2.5 relative">
@@ -748,15 +778,17 @@ function AppointmentDetail({
                                         const allocEnd = new Date(alloc.ends_at);
                                         const subService = alloc.service_phases?.sub_services;
                                         const phaseLabel = alloc.service_phases?.label || subService?.name || `Fase ${idx + 1}`;
-                                        const phaseColor = subService?.color || "rgba(255,255,255,0.15)";
+                                        const phaseColorVal = subService?.color || "bg-black/20";
+                                        const isPhaseTw = phaseColorVal.startsWith("bg-");
+                                        const phaseTextColor = isPhaseTw ? "text-white" : "text-slate-800";
                                         const profName = alloc.profiles?.full_name || "Sin asignar";
                                         const resName = alloc.physical_resources?.name || "";
 
                                         return (
                                             <div
                                                 key={alloc.id}
-                                                className="relative flex flex-col p-3 rounded-sm text-slate-800 shadow-sm border border-white/20 transition-transform hover:-translate-y-0.5"
-                                                style={{ backgroundColor: phaseColor }}
+                                                className={`relative flex flex-col p-3 rounded-sm shadow-sm border border-white/20 transition-transform hover:-translate-y-0.5 ${isPhaseTw ? phaseColorVal : ''} ${phaseTextColor}`}
+                                                style={isPhaseTw ? undefined : { backgroundColor: phaseColorVal }}
                                             >
                                                 <div className="absolute top-0 right-0 w-3 h-3 bg-white/20 rounded-bl-sm" style={{ boxShadow: "-1px 1px 2px rgba(0,0,0,0.1)" }}></div>
                                                 <div className="flex justify-between items-start mb-2">
@@ -770,7 +802,7 @@ function AppointmentDetail({
                                                         {format(allocStart, "HH:mm")} - {format(allocEnd, "HH:mm")}
                                                     </div>
                                                 </div>
-                                                <div className="flex gap-4 text-[10px] font-semibold text-slate-800/90 mt-1 bg-black/10 p-2 rounded-sm border border-slate-200 shadow-inner flex-wrap">
+                                                <div className="flex gap-4 text-[10px] font-semibold mt-1 bg-black/10 p-2 rounded-sm border border-slate-200 shadow-inner flex-wrap">
                                                     <div className="flex items-center gap-1.5 drop-shadow-sm">
                                                         <UserCircle className="w-3.5 h-3.5 opacity-80" /> {profName}
                                                     </div>
@@ -788,11 +820,11 @@ function AppointmentDetail({
                     )}
 
                     {apt.notes && (
-                        <div className="bg-black/10 rounded-sm p-4 border border-white/20 mt-4 shadow-inner">
-                            <h4 className="text-xs font-bold text-slate-800/70 uppercase tracking-widest flex items-center gap-2 mb-2">
+                        <div className={`bg-black/10 rounded-sm p-4 border border-white/20 mt-4 shadow-inner ${textColor}`}>
+                            <h4 className="text-xs font-bold uppercase tracking-widest flex items-center gap-2 mb-2 opacity-70">
                                 <ClipboardList className="w-4 h-4" /> Notas
                             </h4>
-                            <p className="text-sm text-slate-800 font-medium whitespace-pre-wrap">{apt.notes}</p>
+                            <p className="text-sm font-medium whitespace-pre-wrap">{apt.notes}</p>
                         </div>
                     )}
                 </div>
@@ -801,15 +833,15 @@ function AppointmentDetail({
     );
 }
 
-function DetailCard({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
+function DetailCard({ icon, title, value, textColor = "text-slate-800" }: { icon: React.ReactNode; title: string; value: string; textColor?: string }) {
     return (
-        <div className="flex items-start gap-2.5 p-3 rounded-sm bg-black/10 border border-white/20 shadow-sm ">
-            <div className="p-1.5 bg-white/20 rounded shadow-inner text-slate-800">
+        <div className={`flex items-start gap-2.5 p-3 rounded-sm bg-black/10 border border-white/20 shadow-sm ${textColor}`}>
+            <div className={`p-1.5 bg-white/20 rounded shadow-inner ${textColor}`}>
                 {React.cloneElement(icon as React.ReactElement, { className: "w-4 h-4 drop-shadow-sm" })}
             </div>
-            <div className="min-w-0">
-                <p className="text-[9px] font-black text-slate-800/70 uppercase tracking-wider mb-0.5">{title}</p>
-                <p className="text-xs font-bold text-slate-800 truncate drop-shadow-sm">{value}</p>
+            <div className={`min-w-0 ${textColor}`}>
+                <p className={`text-[9px] font-black uppercase tracking-wider mb-0.5 opacity-70`}>{title}</p>
+                <p className="text-xs font-bold truncate drop-shadow-sm">{value}</p>
             </div>
         </div>
     );
