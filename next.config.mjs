@@ -11,10 +11,11 @@ const nextConfig = {
         ],
     },
     async rewrites() {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api-agenda-web.wfrhms.easypanel.host';
         return [
             {
                 source: '/api/v1/:path*',
-                destination: 'https://api-agenda-web.wfrhms.easypanel.host/api/v1/:path*',
+                destination: `${apiUrl}/api/v1/:path*`,
             },
         ];
     },

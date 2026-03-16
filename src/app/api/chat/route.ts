@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const N8N_WEBHOOK_URL =
-    process.env.N8N_WEBHOOK_URL ||
-    "https://n8n-n8n.wfrhms.easypanel.host/webhook/68a44c4f-a484-41c4-9f9e-109785fac488";
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL!;
 
 export async function POST(request: NextRequest) {
     try {
