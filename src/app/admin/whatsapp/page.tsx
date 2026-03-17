@@ -191,9 +191,24 @@ export default function WhatsAppPage() {
                 (payload) => {
                     const newMsg = payload.new as WhatsAppMessage;
 
-                    // If the message belongs to the currently-selected conversation, append it
+                    // If the message belongs to the currently-selected conversation
                     if (newMsg.conversation_id === selectedIdRef.current) {
-                        setMessages((prev) => [...prev, newMsg]);
+                        setMessages((prev) => {
+                            // Check if this is replacing an optimistic (temp) message
+                            const hasOptimistic = prev.some(
+                                (m) => m.id.startsWith("temp-") && m.content === newMsg.content && m.sender_type === newMsg.sender_type
+                            );
+                            if (hasOptimistic) {
+                                // Replace the optimistic message with the real one
+                                return prev.map((m) =>
+                                    m.id.startsWith("temp-") && m.content === newMsg.content && m.sender_type === newMsg.sender_type
+                                        ? newMsg
+                                        : m
+                                );
+                            }
+                            // Otherwise append (new message from client or bot)
+                            return [...prev, newMsg];
+                        });
 
                         // Play sound based on message direction
                         if (!newMsg.from_me) {
@@ -279,13 +294,55 @@ export default function WhatsAppPage() {
 
     const handleSendMessage = async (content: string) => {
         if (!selectedId) return;
+
+        // Optimistic: show message immediately with "pending" status
+        const tempId = `temp-${Date.now()}`;
+        const optimisticMsg: WhatsAppMessage = {
+            id: tempId,
+            conversation_id: selectedId,
+            wa_message_id: tempId,
+            sender_type: "admin",
+            sender_id: null,
+            content,
+            media_type: null,
+            media_url: null,
+            media_mime_type: null,
+            message_type: "conversation",
+            status: "pending",
+            from_me: true,
+            created_at: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, optimisticMsg]);
+
+        // Update conversation preview
+        setConversations((prev) =>
+            prev.map((c) =>
+                c.id === selectedId
+                    ? { ...c, last_message: content, last_message_at: optimisticMsg.created_at }
+                    : c
+            )
+        );
+
         const res = await apiFetch("/api/whatsapp/send", {
             method: "POST",
             body: JSON.stringify({ conversationId: selectedId, content }),
         });
-        // Play outgoing sound on success; the new message arrives via Realtime
+
         if (res.ok) {
             playOutgoingSound();
+            // Replace optimistic message with "sent" status
+            setMessages((prev) =>
+                prev.map((m) =>
+                    m.id === tempId ? { ...m, status: "sent" } : m
+                )
+            );
+        } else {
+            // Mark as failed
+            setMessages((prev) =>
+                prev.map((m) =>
+                    m.id === tempId ? { ...m, status: "failed" } : m
+                )
+            );
         }
     };
 
