@@ -370,9 +370,9 @@ export default function WhatsAppPage() {
     );
 
     return (
-        <div className="flex h-full">
+        <div className="flex h-full overflow-hidden">
             {!realtimeConnected && (
-                <div className="fixed top-0 left-0 right-0 bg-yellow-100 text-yellow-800 text-center text-sm py-1 z-50 font-medium">
+                <div className="absolute top-0 left-0 right-0 bg-amber-50 text-amber-600 text-center text-xs py-1 z-50 font-medium border-b border-amber-200">
                     Reconectando...
                 </div>
             )}
@@ -398,7 +398,7 @@ export default function WhatsAppPage() {
                     isLoadingMore={isLoadingMore}
                 />
             ) : (
-                <div className="flex-1">
+                <div className="flex-1 overflow-hidden">
                     <EmptyChat />
                 </div>
             )}
