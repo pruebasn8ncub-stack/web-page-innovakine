@@ -65,6 +65,7 @@ async function evolutionFetch(
   return fetch(`${baseUrl}${path}`, {
     ...options,
     headers,
+    signal: options.signal ?? AbortSignal.timeout(10000),
   });
 }
 
