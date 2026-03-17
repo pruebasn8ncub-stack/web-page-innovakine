@@ -21,7 +21,7 @@ function getEnv(key: string): string {
 // Types
 // ---------------------------------------------------------------------------
 
-export type MediaType = 'image' | 'video' | 'audio' | 'document';
+export type MediaType = 'image' | 'video' | 'audio' | 'document' | 'sticker';
 
 export interface SendMessageResult {
   messageId: string;
