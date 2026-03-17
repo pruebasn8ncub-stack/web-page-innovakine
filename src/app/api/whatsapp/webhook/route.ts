@@ -309,6 +309,9 @@ async function handleMessagesUpsert(
     if (stored) {
       mediaInfo.mediaUrl = stored.url;
       mediaInfo.mediaMimeType = stored.mimeType;
+    } else {
+      // Don't store WhatsApp encrypted URLs — they're not browser-accessible
+      mediaInfo.mediaUrl = null;
     }
   }
 

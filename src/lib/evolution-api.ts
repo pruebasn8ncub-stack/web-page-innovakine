@@ -5,6 +5,8 @@
  * This module must never be imported from client components.
  */
 
+import { supabaseAdmin } from '@/lib/supabase-admin';
+
 // ---------------------------------------------------------------------------
 // Environment
 // ---------------------------------------------------------------------------
@@ -309,17 +311,17 @@ export async function downloadAndStoreMedia(
     const ext = extMap[mimeType] ?? 'bin';
     const filePath = `${conversationId}/${mediaType}/${messageId}.${ext}`;
 
-    // Import supabaseAdmin dynamically to avoid circular deps
-    const { supabaseAdmin } = await import('@/lib/supabase-admin');
-
     const { error } = await supabaseAdmin.storage
       .from('whatsapp-media')
-      .upload(filePath, buffer, {
+      .upload(filePath, new Uint8Array(buffer), {
         contentType: mimeType,
         upsert: true,
       });
 
-    if (error) return null;
+    if (error) {
+      console.error('[Storage upload error]', error.message);
+      return null;
+    }
 
     const { data: urlData } = supabaseAdmin.storage
       .from('whatsapp-media')
