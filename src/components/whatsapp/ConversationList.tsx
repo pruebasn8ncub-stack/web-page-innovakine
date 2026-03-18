@@ -5,7 +5,6 @@ import { Search, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { WhatsAppConversation, WhatsAppBotSettings } from "@/types/whatsapp";
 import ConversationItem from "./ConversationItem";
-import AttentionQueue from "./AttentionQueue";
 
 interface ConversationListProps {
     conversations: WhatsAppConversation[];
@@ -191,39 +190,30 @@ export default function ConversationList({
                 </div>
             </div>
 
-            {/* Queue view or conversation list */}
-            {showNeedsHuman ? (
-                <AttentionQueue
-                    conversations={conversations}
-                    selectedId={selectedId}
-                    onSelect={onSelect}
-                    onClose={() => setShowNeedsHuman(false)}
-                />
-            ) : (
-                <div
-                    ref={listRef}
-                    onScroll={handleScroll}
-                    className="flex-1 overflow-y-auto relative"
-                >
-                    {filtered.length === 0 ? (
-                        <p className="text-center text-sm text-[#5e7a9a] mt-10 px-4">
-                            No se encontraron conversaciones
-                        </p>
-                    ) : (
-                        filtered.map((conv) => (
-                            <ConversationItem
-                                key={conv.id}
-                                conversation={conv}
-                                isSelected={selectedId === conv.id}
-                                onClick={() => onSelect(conv.id)}
-                            />
-                        ))
-                    )}
+            {/* Conversation list */}
+            <div
+                ref={listRef}
+                onScroll={handleScroll}
+                className="flex-1 overflow-y-auto relative"
+            >
+                {filtered.length === 0 ? (
+                    <p className="text-center text-sm text-[#5e7a9a] mt-10 px-4">
+                        No se encontraron conversaciones
+                    </p>
+                ) : (
+                    filtered.map((conv) => (
+                        <ConversationItem
+                            key={conv.id}
+                            conversation={conv}
+                            isSelected={selectedId === conv.id}
+                            onClick={() => onSelect(conv.id)}
+                        />
+                    ))
+                )}
 
-                    {/* Bottom gradient fade for scrollable list */}
-                    <div className="sticky bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-                </div>
-            )}
+                {/* Bottom gradient fade for scrollable list */}
+                <div className="sticky bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            </div>
         </div>
     );
 }
