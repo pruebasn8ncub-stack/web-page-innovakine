@@ -36,6 +36,36 @@ export interface MediaInfo {
   messageType: string | null;
 }
 
+export interface LocationInfo {
+  latitude: number;
+  longitude: number;
+  name: string | null;
+  address: string | null;
+}
+
+/**
+ * Extract location data from a raw WhatsApp message.
+ * Returns null for non-location messages.
+ */
+export function extractLocationInfo(
+  message: Record<string, unknown>
+): LocationInfo | null {
+  const loc = message.locationMessage ?? message.liveLocationMessage;
+  if (!loc || typeof loc !== 'object') return null;
+
+  const l = loc as Record<string, unknown>;
+  const latitude = typeof l.degreesLatitude === 'number' ? l.degreesLatitude : null;
+  const longitude = typeof l.degreesLongitude === 'number' ? l.degreesLongitude : null;
+  if (latitude === null || longitude === null) return null;
+
+  return {
+    latitude,
+    longitude,
+    name: typeof l.name === 'string' ? l.name : null,
+    address: typeof l.address === 'string' ? l.address : null,
+  };
+}
+
 export interface ReactionInfo {
   emoji: string;
   reactedMessageId: string;

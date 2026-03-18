@@ -13,6 +13,7 @@ import {
   extractTextContent,
   extractMediaInfo,
   extractReactionInfo,
+  extractLocationInfo,
   unwrapMessage,
   parseJidToPhone,
   sendTextMessage,
@@ -406,10 +407,24 @@ async function handleMessagesUpsert(
   // ── Normal message flow (non-reaction) ──
   // Unwrap ephemeralMessage, viewOnceMessage, etc. before extracting content/media
   const unwrapped = unwrapMessage(rawMessage);
+
+  // Check for location messages
+  const locationInfo = extractLocationInfo(unwrapped);
   let content = extractTextContent(unwrapped);
   const mediaInfo = extractMediaInfo(unwrapped);
-  const messageType =
-    mediaInfo.messageType ?? (rawMessage.conversation !== undefined ? 'conversation' : 'unknown');
+
+  // For location messages, build structured content
+  // Format sync: MessageBubble.tsx parses this — keep both in sync.
+  if (locationInfo) {
+    const parts = [`📍 ${locationInfo.latitude},${locationInfo.longitude}`];
+    if (locationInfo.name) parts.push(locationInfo.name);
+    if (locationInfo.address) parts.push(locationInfo.address);
+    content = parts.join('\n');
+  }
+
+  const messageType = locationInfo
+    ? 'locationMessage'
+    : mediaInfo.messageType ?? (rawMessage.conversation !== undefined ? 'conversation' : 'unknown');
   const hasMedia = !!(mediaInfo.mediaType && waMessageId && jid);
 
   // ── Idempotency check BEFORE media processing (avoid wasting API calls) ──

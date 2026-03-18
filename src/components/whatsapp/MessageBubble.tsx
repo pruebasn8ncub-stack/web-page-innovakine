@@ -244,6 +244,55 @@ function ImageMedia({ src }: { src: string }) {
 // Media content dispatcher
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Location message
+// Format sync: webhook/route.ts builds this format — keep both in sync.
+// ---------------------------------------------------------------------------
+
+function parseLocationContent(content: string): { lat: number; lng: number; name: string | null; address: string | null } | null {
+    // Format: "📍 lat,lng\nName\nAddress"
+    const match = content.match(/^📍\s*(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+    if (!match) return null;
+    const lines = content.split("\n");
+    return {
+        lat: parseFloat(match[1]),
+        lng: parseFloat(match[2]),
+        name: lines[1]?.trim() || null,
+        address: lines[2]?.trim() || null,
+    };
+}
+
+function LocationBubble({ content }: { content: string }) {
+    const loc = parseLocationContent(content);
+    if (!loc) return null;
+
+    const mapsUrl = `https://www.google.com/maps?q=${loc.lat},${loc.lng}`;
+    const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${loc.lat},${loc.lng}&zoom=15&size=280x150&scale=2&markers=color:red%7C${loc.lat},${loc.lng}&key=`;
+
+    return (
+        <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="block group">
+            {/* Map preview using OpenStreetMap embed */}
+            <div className="rounded-xl overflow-hidden mb-1.5 bg-[var(--bg-main)] border border-[var(--border)]">
+                <iframe
+                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${loc.lng - 0.005},${loc.lat - 0.003},${loc.lng + 0.005},${loc.lat + 0.003}&layer=mapnik&marker=${loc.lat},${loc.lng}`}
+                    className="w-[280px] h-[150px] border-0 pointer-events-none"
+                    title="Ubicación"
+                />
+            </div>
+            {loc.name && (
+                <p className="text-[0.82rem] font-semibold text-[var(--text)] px-1 leading-tight group-hover:underline">
+                    {loc.name}
+                </p>
+            )}
+            {loc.address && (
+                <p className="text-[0.72rem] text-[var(--text-muted)] px-1 leading-tight mt-0.5">
+                    {loc.address}
+                </p>
+            )}
+        </a>
+    );
+}
+
 function MediaContent({ message }: { message: WhatsAppMessage }) {
     if (!message.media_type) return null;
 
@@ -429,6 +478,28 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
     // Reaction messages
     if (message.message_type === "reactionMessage") {
         return <ReactionBubble message={message} />;
+    }
+
+    // Location messages
+    if (message.message_type === "locationMessage" && message.content?.startsWith("📍")) {
+        return (
+            <div className={cn("flex my-1", config.align)}>
+                <div className={cn("max-w-[70%] p-1.5", config.bubble, config.roundedClass, isFailed && "ring-2 ring-red-200")}>
+                    {config.label && (
+                        <p className={cn("text-[0.65rem] font-semibold tracking-wide uppercase mb-0.5 px-2 pt-1", config.labelColor)}>
+                            {config.label}
+                        </p>
+                    )}
+                    <LocationBubble content={message.content} />
+                    <div className="flex items-center justify-end gap-1 mt-0.5 px-2 pb-1">
+                        <span className="text-[0.6rem] text-[var(--text-muted)]/60">
+                            {formatTimestamp(message.created_at)}
+                        </span>
+                        {isFromMe && <DeliveryTicks status={message.status} />}
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const { displayText, transcription } = parseContent(message.content, message.media_type);
