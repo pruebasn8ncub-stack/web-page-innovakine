@@ -450,13 +450,17 @@ async function handleMessagesUpsert(
       if (transcription) {
         content = `[Audio transcrito]: ${transcription}`;
       }
-    } else if (mediaInfo.mediaType === 'image') {
+    } else if (mediaInfo.mediaType === 'image' || mediaInfo.mediaType === 'sticker') {
       // Generate description for memory/context — Gemini still sees the real image via multimodal
-      const description = await describeImageForMemory(mediaDataUri ?? mediaInfo.mediaUrl, content || undefined);
+      const label = mediaInfo.mediaType === 'sticker' ? 'Sticker' : 'Imagen';
+      const prompt = mediaInfo.mediaType === 'sticker'
+        ? 'Describe este sticker en 1 frase concisa. Indica la emoción o intención que transmite.'
+        : undefined;
+      const description = await describeImageForMemory(mediaDataUri ?? mediaInfo.mediaUrl, prompt ?? (content || undefined));
       if (description) {
         content = content
-          ? `${content}\n[Imagen: ${description}]`
-          : `[Imagen: ${description}]`;
+          ? `${content}\n[${label}: ${description}]`
+          : `[${label}: ${description}]`;
       }
     }
   }

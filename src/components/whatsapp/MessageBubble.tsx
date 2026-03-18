@@ -303,19 +303,19 @@ function parseContent(content: string | null, mediaType: string | null) {
         return { displayText: null, transcription: content.slice(audioPrefix.length).trim() };
     }
 
-    // Image AI description prefixes (old and new formats)
-    const imgPrefixes = ["[Foto del cliente]: ", "[Imagen adjunta - descripción IA]: ", "[Imagen: "];
+    // Image/Sticker AI description prefixes (old and new formats)
+    const aiPrefixes = ["[Foto del cliente]: ", "[Imagen adjunta - descripción IA]: ", "[Imagen: ", "[Sticker: "];
 
-    // Image with caption + AI description
-    if (mediaType === "image") {
-        for (const prefix of imgPrefixes) {
+    // Image/Sticker with caption + AI description
+    if (mediaType === "image" || mediaType === "sticker") {
+        for (const prefix of aiPrefixes) {
             const idx = content.indexOf("\n" + prefix);
             if (idx > 0) {
                 return { displayText: content.slice(0, idx).trim(), transcription: null };
             }
         }
-        // Pure image description (no caption)
-        for (const prefix of imgPrefixes) {
+        // Pure AI description (no caption)
+        for (const prefix of aiPrefixes) {
             if (content.startsWith(prefix) || content.startsWith(prefix.replace(": ", ":"))) {
                 return { displayText: null, transcription: null };
             }
