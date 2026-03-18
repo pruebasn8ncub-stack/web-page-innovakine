@@ -9,28 +9,32 @@ import Link from "next/link";
 export function FAQ() {
     const faqs = [
         {
-            question: "¿Qué es la terapia hiperbárica y para qué sirve?",
-            answer: "Consiste en respirar oxígeno puro al 100% en una cámara presurizada. Esto eleva la concentración de oxígeno en sangre hasta 15 veces, acelerando la curación de tejidos, reduciendo la inflamación y estimulando la regeneración celular. Es eficaz para recuperación deportiva, heridas crónicas, fatiga y condiciones neurológicas."
+            question: "¿Qué es la cámara hiperbárica y para qué sirve?",
+            answer: "Es un tratamiento donde respiras oxígeno a mayor presión (1.5 ATA), lo que ayuda a tus células a recuperarse y regenerarse. Mejora la oxigenación de los tejidos, disminuye la inflamación y el dolor, y favorece la cicatrización. Es útil para artrosis, lumbago, fibromialgia, migrañas, lesiones deportivas, recuperación post-quirúrgica y problemas de sueño."
         },
         {
-            question: "¿Cuántas sesiones de kinesiología necesito?",
-            answer: "Depende de cada caso. En la consulta inicial realizamos una evaluación funcional completa y elaboramos un plan personalizado. Los tratamientos suelen variar entre 6 y 20 sesiones, con reevaluaciones periódicas para ajustar el protocolo."
+            question: "¿Cuánto cuesta y qué incluye la sesión de evaluación?",
+            answer: "La sesión de evaluación tiene un valor promocional de $19.990 e incluye 30 minutos de entrevista clínica con la kinesióloga y 1 hora completa en cámara hiperbárica. Si decides continuar con un plan de tratamiento, esta sesión cuenta como la primera y obtienes un 20% de descuento."
+        },
+        {
+            question: "¿Cuántas sesiones necesito y con qué frecuencia?",
+            answer: "Idealmente 2 a 3 veces por semana para obtener el efecto óptimo. Ofrecemos un plan de 5 sesiones ($103.990) orientado a relajación e insomnio, y uno de 12 sesiones ($159.990) para dolor, inflamación y recuperación. La cantidad exacta depende de tu caso y se define en la evaluación."
         },
         {
             question: "¿Tienen convenio con FONASA o Isapres?",
-            answer: "Atendemos de manera particular. Sin embargo, algunos procedimientos kinesiológicos pueden ser reembolsables según tu plan de salud. Consúltanos directamente por WhatsApp para más información sobre aranceles."
+            answer: "Realizamos atención particular. El tratamiento hiperbárico no es cubierto por FONASA ni Isapres directamente. Sin embargo, la kinesiología sí es reembolsable por Isapres, seguros complementarios de salud y bienestar laboral."
         },
         {
-            question: "¿La terapia hiperbárica es segura?",
-            answer: "Sí. Es un tratamiento médico avalado por evidencia científica, no invasivo y bien tolerado. Antes de iniciar realizamos una evaluación para identificar posibles contraindicaciones. Las sesiones tienen una duración aproximada de 60 minutos."
+            question: "¿La cámara es segura? ¿Qué pasa si soy hipertenso/a?",
+            answer: "Sí, es un tratamiento no invasivo y bien tolerado. La hipertensión controlada con medicamentos no es contraindicación. Siempre realizamos una evaluación previa y tomamos parámetros clínicos antes y después de cada sesión. La cámara es individual, tiene un sillón reclinable y es cómoda incluso para personas de más de 1.80 m."
         },
         {
-            question: "¿Puedo combinar kinesiología con terapia hiperbárica?",
-            answer: "Sí, y es una de las principales ventajas de Innovakine. La combinación de ambas terapias acelera significativamente la recuperación en lesiones musculoesqueléticas y post-quirúrgicas. Nuestras kinesiólogas diseñarán un protocolo integrado según tu condición."
+            question: "¿Qué otros servicios ofrecen además de la cámara?",
+            answer: "Ofrecemos kinesiología, masajes relajantes y descontracturantes, drenaje linfático, presoterapia y un Plan Integral de Drenaje y Recuperación. También realizamos kinesiología a domicilio. La combinación de cámara hiperbárica con kinesiología acelera significativamente la recuperación."
         },
         {
             question: "¿Cómo puedo agendar una hora?",
-            answer: "Escríbenos por WhatsApp al +56 9 3018 6496 o usa el formulario de esta página. Atendemos lunes a viernes de 9:00 a 17:00 hrs y respondemos a la brevedad."
+            answer: "Escríbenos por WhatsApp al +56 9 3018 6496 o usa nuestro chat en esta página. Indicanos qué día te acomoda y si prefieres horario AM o PM. Atendemos de lunes a jueves de 09:00 a 19:00 hrs y viernes de 09:00 a 18:00 hrs."
         }
     ];
 
