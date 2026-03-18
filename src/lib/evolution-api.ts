@@ -36,6 +36,34 @@ export interface MediaInfo {
   messageType: string | null;
 }
 
+export interface ReactionInfo {
+  emoji: string;
+  reactedMessageId: string;
+}
+
+/**
+ * Extract reaction data from a raw WhatsApp message.
+ * Returns null for non-reactions or reaction removals (empty emoji).
+ *
+ * Format sync: the content string built from this data in webhook/route.ts
+ * is parsed by MessageBubble.tsx — keep both in sync.
+ */
+export function extractReactionInfo(
+  message: Record<string, unknown>
+): ReactionInfo | null {
+  const reaction = message.reactionMessage;
+  if (!reaction || typeof reaction !== 'object') return null;
+
+  const r = reaction as Record<string, unknown>;
+  const emoji = typeof r.text === 'string' ? r.text : '';
+  if (!emoji) return null; // Empty = reaction removed, ignore
+
+  const key = r.key as Record<string, unknown> | undefined;
+  const reactedMessageId = typeof key?.id === 'string' ? key.id : '';
+
+  return { emoji, reactedMessageId };
+}
+
 // Shape returned by Evolution API for a sent message
 interface EvolutionSendResponse {
   key?: {

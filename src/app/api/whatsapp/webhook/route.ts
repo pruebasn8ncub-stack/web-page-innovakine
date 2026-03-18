@@ -12,6 +12,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import {
   extractTextContent,
   extractMediaInfo,
+  extractReactionInfo,
   parseJidToPhone,
   sendTextMessage,
   fetchProfilePicture,
