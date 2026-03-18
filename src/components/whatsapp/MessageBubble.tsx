@@ -271,7 +271,7 @@ function MediaContent({ message }: { message: WhatsAppMessage }) {
     if (message.media_type === "sticker") {
         return (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={message.media_url} alt="sticker" className="w-36 h-36 object-contain" />
+            <img src={message.media_url} alt="sticker" className="rounded-xl max-w-[200px] w-full object-contain" />
         );
     }
     if (message.media_type === "document") {
@@ -413,7 +413,6 @@ function ReactionBubble({ message }: { message: WhatsAppMessage }) {
 export default function MessageBubble({ message }: MessageBubbleProps) {
     const config = senderConfig[message.sender_type];
     const isFailed = message.status === "failed";
-    const isSticker = message.media_type === "sticker";
     const isFromMe = message.from_me;
 
     // System messages
@@ -430,21 +429,6 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
     // Reaction messages
     if (message.message_type === "reactionMessage") {
         return <ReactionBubble message={message} />;
-    }
-
-    // Sticker messages — no bubble, floating timestamp over the sticker
-    if (isSticker) {
-        return (
-            <div className={cn("flex my-1", config.align)}>
-                <div className="relative inline-block">
-                    <MediaContent message={message} />
-                    <span className="absolute bottom-1 right-1 bg-black/50 backdrop-blur-sm text-white text-[0.6rem] px-1.5 py-0.5 rounded-full flex items-center gap-1">
-                        {formatTimestamp(message.created_at)}
-                        {isFromMe && <DeliveryTicks status={message.status} />}
-                    </span>
-                </div>
-            </div>
-        );
     }
 
     const { displayText, transcription } = parseContent(message.content, message.media_type);
