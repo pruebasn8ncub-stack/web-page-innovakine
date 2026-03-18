@@ -16,6 +16,9 @@ export interface WhatsAppConversation {
   is_bot_paused: boolean;
   paused_by: string | null;
   paused_at: string | null;
+  needs_human: boolean;
+  needs_human_since: string | null;
+  needs_human_reason: string | null;
   created_at: string;
   updated_at: string;
 }

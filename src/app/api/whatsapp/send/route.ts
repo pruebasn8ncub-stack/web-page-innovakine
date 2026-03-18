@@ -138,7 +138,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       },
     });
 
-    // Auto-pause bot and cancel any pending debounce
+    // Auto-pause bot, cancel pending debounce, and clear needs_human flag
     if (!conversation.is_bot_paused) {
       await supabaseAdmin
         .from('whatsapp_conversations')
@@ -147,6 +147,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           paused_by: authUser.id,
           paused_at: new Date().toISOString(),
           bot_pending_since: null,
+          needs_human: false,
+          needs_human_since: null,
+          needs_human_reason: null,
+        })
+        .eq('id', conversationId);
+    } else {
+      // Bot already paused but clear needs_human if set
+      await supabaseAdmin
+        .from('whatsapp_conversations')
+        .update({
+          needs_human: false,
+          needs_human_since: null,
+          needs_human_reason: null,
         })
         .eq('id', conversationId);
     }

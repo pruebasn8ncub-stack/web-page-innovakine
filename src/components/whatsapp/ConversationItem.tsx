@@ -125,6 +125,11 @@ export default function ConversationItem({
                         <span className="font-semibold text-sm text-[#0d1f35] truncate">
                             {conversation.contact_name}
                         </span>
+                        {conversation.needs_human && (
+                            <span className="text-[0.6rem] leading-none px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 font-medium flex-shrink-0">
+                                Atencion
+                            </span>
+                        )}
                         {conversation.is_bot_paused ? (
                             <span className="text-[0.6rem] leading-none px-1.5 py-0.5 rounded-md bg-red-50 text-red-400 font-medium flex-shrink-0">
                                 Pausado

@@ -26,6 +26,7 @@ export default function ConversationList({
     const [search, setSearch] = useState("");
     const [readFilter, setReadFilter] = useState<"all" | "unread" | "read">("all");
     const [botFilter, setBotFilter] = useState<"all" | "active" | "paused">("all");
+    const [showNeedsHuman, setShowNeedsHuman] = useState(false);
     const [headerShadow, setHeaderShadow] = useState(false);
     const [togglePressed, setTogglePressed] = useState(false);
     const listRef = useRef<HTMLDivElement>(null);
@@ -42,8 +43,12 @@ export default function ConversationList({
         setTimeout(() => setTogglePressed(false), 200);
     }
 
+    const needsHumanCount = conversations.filter((c) => c.needs_human).length;
+
     const filtered = conversations
         .filter((c) => {
+            // Needs human filter (overrides other filters)
+            if (showNeedsHuman) return c.needs_human;
             // Search filter
             if (search.trim()) {
                 const q = search.toLowerCase();
@@ -148,10 +153,10 @@ export default function ConversationList({
                             <button
                                 key={v}
                                 type="button"
-                                onClick={() => setBotFilter(botFilter === v ? "all" : v)}
+                                onClick={() => { setBotFilter(botFilter === v ? "all" : v); setShowNeedsHuman(false); }}
                                 className={cn(
                                     "px-2.5 py-1 rounded-lg text-[0.68rem] font-medium transition-all",
-                                    botFilter === v
+                                    botFilter === v && !showNeedsHuman
                                         ? v === "active"
                                             ? "bg-teal/10 text-teal border border-teal/20"
                                             : "bg-red-50 text-red-400 border border-red-200/50"
@@ -162,6 +167,26 @@ export default function ConversationList({
                             </button>
                         );
                     })}
+                    {needsHumanCount > 0 && (
+                        <>
+                            <div className="w-px h-5 bg-slate-200 self-center mx-0.5" />
+                            <button
+                                type="button"
+                                onClick={() => { setShowNeedsHuman(!showNeedsHuman); setReadFilter("all"); setBotFilter("all"); }}
+                                className={cn(
+                                    "px-2.5 py-1 rounded-lg text-[0.68rem] font-medium transition-all flex items-center gap-1",
+                                    showNeedsHuman
+                                        ? "bg-amber-50 text-amber-600 border border-amber-200/50"
+                                        : "bg-amber-50 text-amber-600 border border-transparent hover:border-amber-200/50 animate-pulse"
+                                )}
+                            >
+                                Atencion
+                                <span className="min-w-[16px] h-4 rounded-full bg-amber-500 text-white text-[0.55rem] font-bold flex items-center justify-center px-1">
+                                    {needsHumanCount}
+                                </span>
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
 
