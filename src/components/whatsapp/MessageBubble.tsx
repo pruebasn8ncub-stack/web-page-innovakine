@@ -367,6 +367,46 @@ const senderConfig: Record<SenderType, {
 };
 
 // ---------------------------------------------------------------------------
+// Reaction message display
+// Format sync: webhook/route.ts builds this format — keep both in sync.
+// ---------------------------------------------------------------------------
+
+function parseReactionContent(content: string): { emoji: string; reference: string | null } {
+    // Format: "Reaccionó {emoji} a: "{text}"" or "Reaccionó {emoji}"
+    const match = content.match(/^Reaccionó\s(.+?)\sa:\s"([\s\S]+)"$/);
+    if (match) {
+        return { emoji: match[1], reference: match[2] };
+    }
+    // Fallback: extract emoji after "Reaccionó "
+    const simple = content.match(/^Reaccionó\s(.+)$/);
+    return { emoji: simple?.[1] ?? content, reference: null };
+}
+
+function ReactionBubble({ message }: { message: WhatsAppMessage }) {
+    const config = senderConfig[message.sender_type];
+    const { emoji, reference } = parseReactionContent(message.content ?? "");
+
+    return (
+        <div className={cn("flex my-1", config.align)}>
+            <div className={cn("px-3 py-2", config.bubble, config.roundedClass)}>
+                <span className="text-2xl leading-none">{emoji}</span>
+                {reference && (
+                    <p className="text-[0.65rem] text-[var(--text-muted)]/60 mt-1 max-w-[200px] truncate italic">
+                        {reference}
+                    </p>
+                )}
+                <div className="flex items-center justify-end mt-0.5">
+                    <span className="text-[0.6rem] text-[var(--text-muted)]/60">
+                        {formatTimestamp(message.created_at)}
+                    </span>
+                    {message.from_me && <DeliveryTicks status={message.status} />}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
 
@@ -385,6 +425,11 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                 </div>
             </div>
         );
+    }
+
+    // Reaction messages
+    if (message.message_type === "reactionMessage") {
+        return <ReactionBubble message={message} />;
     }
 
     const { displayText, transcription } = parseContent(message.content, message.media_type);
