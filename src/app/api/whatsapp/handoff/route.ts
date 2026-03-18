@@ -100,7 +100,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       .update({
         needs_human: true,
         needs_human_since: new Date().toISOString(),
-        needs_human_reason: finalReason,
+        needs_human_reason: finalSummary,
+        needs_human_status: 'pending',
       })
       .eq('id', conversation.id);
 

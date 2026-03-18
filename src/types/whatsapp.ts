@@ -19,6 +19,8 @@ export interface WhatsAppConversation {
   needs_human: boolean;
   needs_human_since: string | null;
   needs_human_reason: string | null;
+  needs_human_status: 'none' | 'pending' | 'in_progress' | 'resolved';
+  needs_human_resolved_at: string | null;
   created_at: string;
   updated_at: string;
 }

@@ -138,7 +138,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       },
     });
 
-    // Auto-pause bot, cancel pending debounce, and clear needs_human flag
+    // Auto-pause bot, cancel pending debounce, and resolve needs_human
+    const resolveFields = conversation.needs_human ? {
+      needs_human: false,
+      needs_human_status: 'resolved' as const,
+      needs_human_resolved_at: new Date().toISOString(),
+    } : {};
+
     if (!conversation.is_bot_paused) {
       await supabaseAdmin
         .from('whatsapp_conversations')
@@ -147,20 +153,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           paused_by: authUser.id,
           paused_at: new Date().toISOString(),
           bot_pending_since: null,
-          needs_human: false,
-          needs_human_since: null,
-          needs_human_reason: null,
+          ...resolveFields,
         })
         .eq('id', conversationId);
-    } else {
-      // Bot already paused but clear needs_human if set
+    } else if (conversation.needs_human) {
       await supabaseAdmin
         .from('whatsapp_conversations')
-        .update({
-          needs_human: false,
-          needs_human_since: null,
-          needs_human_reason: null,
-        })
+        .update(resolveFields)
         .eq('id', conversationId);
     }
 
