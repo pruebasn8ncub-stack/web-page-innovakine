@@ -1,0 +1,258 @@
+{
+  "metadata": {
+    "description": "Terminologia de la clinica Innovakine con variantes coloquiales detectadas en conversaciones reales",
+    "purpose": "El bot debe entender todas las variantes y responder de forma coherente"
+  },
+  "terms": {
+    "camara_hiperbarica": {
+      "nombre_oficial": "Camara hiperbarica",
+      "variantes_cliente": [
+        "la camara",
+        "camara",
+        "hiperbarica",
+        "tratamiento hiperbarico",
+        "terapia hiperbarica",
+        "oxigeno hiperbarico",
+        "la capsula"
+      ],
+      "variantes_admin": [
+        "camara hiperbarica",
+        "camara",
+        "tratamiento hiperbarico"
+      ],
+      "descripcion": "Tratamiento donde se respira oxigeno a mayor presion (1.5 ATA) para recuperacion y regeneracion celular"
+    },
+    "sesion_evaluacion": {
+      "nombre_oficial": "Sesion de evaluacion",
+      "variantes_cliente": [
+        "evaluacion",
+        "primera sesion",
+        "sesion de prueba",
+        "la evaluacion",
+        "horita para evaluacion",
+        "la promo",
+        "la promocion"
+      ],
+      "variantes_admin": [
+        "sesion de evaluacion",
+        "evaluacion",
+        "sesion de evaluacion + 1 hora en camara"
+      ],
+      "descripcion": "Primera sesion que incluye 30 min entrevista clinica + 1 hora camara por $19.990"
+    },
+    "kinesiologia": {
+      "nombre_oficial": "Kinesiologia",
+      "variantes_cliente": [
+        "kine",
+        "la kine",
+        "kinesiologia",
+        "sesion de kine",
+        "fisio"
+      ],
+      "variantes_admin": [
+        "kinesiologia",
+        "kine",
+        "kines"
+      ],
+      "descripcion": "Tratamiento de rehabilitacion muscular/articular con kinesiologo"
+    },
+    "presoterapia": {
+      "nombre_oficial": "Presoterapia",
+      "variantes_cliente": [
+        "presoterapia",
+        "la preso",
+        "botas de presion"
+      ],
+      "variantes_admin": [
+        "presoterapia"
+      ],
+      "descripcion": "Tratamiento con compresion para drenaje y recuperacion"
+    },
+    "drenaje_linfatico": {
+      "nombre_oficial": "Drenaje linfatico",
+      "variantes_cliente": [
+        "drenaje",
+        "drenaje linfatico",
+        "masaje drenaje"
+      ],
+      "variantes_admin": [
+        "drenaje linfatico"
+      ],
+      "descripcion": "Masaje especializado para mejorar circulacion linfatica, incluye presoterapia"
+    },
+    "recovery": {
+      "nombre_oficial": "Recovery",
+      "variantes_cliente": [
+        "recovery",
+        "masaje",
+        "masajito",
+        "masaje relajante",
+        "masaje descontracturante"
+      ],
+      "variantes_admin": [
+        "recovery",
+        "masajes relajantes/descontracturantes/deportivo"
+      ],
+      "descripcion": "Servicio de masajes: relajante, descontracturante, deportivo, drenaje linfatico y presoterapia"
+    },
+    "full_recovery": {
+      "nombre_oficial": "Full Recovery",
+      "variantes_cliente": [
+        "full recovery",
+        "el plan completo",
+        "plan integral"
+      ],
+      "variantes_admin": [
+        "full recovery",
+        "Plan Integral de Drenaje y Recuperacion"
+      ],
+      "descripcion": "Plan que incluye 10 sesiones de drenaje linfatico + 10 sesiones de camara hiperbarica"
+    },
+    "box": {
+      "nombre_oficial": "Box de atencion",
+      "variantes_cliente": [],
+      "variantes_admin": [
+        "box",
+        "sala"
+      ],
+      "descripcion": "Sala individual de tratamiento"
+    },
+    "ata": {
+      "nombre_oficial": "ATA (Atmosfera Absoluta)",
+      "variantes_cliente": [
+        "presion",
+        "cuantos ATA",
+        "con que presion funciona"
+      ],
+      "variantes_admin": [
+        "1.5 ATA",
+        "presion de trabajo"
+      ],
+      "descripcion": "Unidad de presion. La camara opera a 1.5 ATA"
+    },
+    "ubicacion": {
+      "nombre_oficial": "Centro Innovakine",
+      "variantes_cliente": [
+        "donde estan",
+        "la oficina",
+        "donde atienden",
+        "la direccion"
+      ],
+      "variantes_admin": [
+        "Avenida Libertad 919, esquina 10 Norte, Edificio Alicahue, Oficina 91, Vina del Mar"
+      ],
+      "descripcion": "Ubicacion fisica del centro clinico"
+    },
+    "equipo": {
+      "nombre_oficial": "Equipo Innovakine",
+      "miembros_mencionados": [
+        {
+          "nombre": "Camila",
+          "rol": "Kinesiologa / Atencion WhatsApp (principal)",
+          "notas": "Responde la mayoria de mensajes, gestiona agenda"
+        },
+        {
+          "nombre": "Daniela",
+          "rol": "Kinesiologa",
+          "notas": "Atiende pacientes, tambien responde WhatsApp ocasionalmente"
+        }
+      ]
+    },
+    "horarios": {
+      "nombre_oficial": "Horario de atencion",
+      "detalle": {
+        "lunes_jueves": "09:00 a 19:00",
+        "viernes": "09:00 a 18:00",
+        "sabado_domingo": "No atienden"
+      }
+    },
+    "planes_precio": {
+      "evaluacion": {
+        "valor": 19990,
+        "valor_original": 24990,
+        "incluye": "30 min entrevista clinica + 1 hora camara hiperbarica"
+      },
+      "sesion_individual": {
+        "valor": 24990
+      },
+      "plan_5_sesiones": {
+        "valor": 103990,
+        "orientado_a": "Relajacion, insomnio, manejo del estres"
+      },
+      "plan_12_sesiones": {
+        "valor": 159990,
+        "valor_original": 199990,
+        "orientado_a": "Dolor, inflamacion, recuperacion"
+      },
+      "full_recovery_sesion": {
+        "valor": 39990,
+        "incluye": "1 hora camara hiperbarica + presoterapia piernas + drenaje linfatico piernas"
+      },
+      "full_recovery_5_sesiones": {
+        "valor": 179990
+      },
+      "full_recovery_10_sesiones": {
+        "valor": 299990
+      },
+      "drenaje_10_sesiones": {
+        "valor": 249990,
+        "incluye": "10 sesiones de drenaje linfatico + presoterapia"
+      },
+      "masaje_1_hora": {
+        "valor": 29990,
+        "duracion": "1 hora",
+        "tipos": ["descontracturante", "relajante", "linfatico"],
+        "nota": "Puede incluir ventosas como complemento. Casi nadie pide ventosas solas."
+      },
+      "ventosas": {
+        "nota": "Las ventosas vienen incluidas como complemento en el masaje y en el Full Recovery. Rara vez se solicitan solas. Si alguien pregunta solo por ventosas sin masaje, se ofrece igualmente.",
+        "valor": 29990
+      },
+      "kine_domicilio": {
+        "por": "sesion",
+        "precios_por_zona": {
+          "valparaiso": 30000,
+          "vina_del_mar": 35000,
+          "con_con": 40000
+        },
+        "nota": "El precio depende de la zona donde se realice la sesion",
+        "reembolsable": "Si, por Isapre con boleta + informe kinesiologico"
+      },
+      "gifcard_camara_drenaje": {
+        "valor": 20000,
+        "incluye": "1 hora camara hiperbarica + 30 min drenaje linfatico",
+        "nota": "Precio especial para pacientes recurrentes"
+      },
+      "descuento": "20% en planes",
+      "facilidad_pago": "2 cuotas (1 al inicio, 1 a la mitad)"
+    },
+    "datos_transferencia": {
+      "razon_social": "INNOVAKINE SPA",
+      "rut": "78.215.314-5",
+      "banco": "Scotiabank Chile",
+      "tipo_cuenta": "Cuenta Corriente",
+      "numero_cuenta": "992415495",
+      "email": "INNOVAKINEVINA@GMAIL.COM"
+    },
+    "google_reviews": {
+      "url": "https://g.page/r/CR-_mBAYeSENEBI/review",
+      "nota": "Se solicita resena a pacientes que terminan su plan"
+    },
+    "google_maps": {
+      "url": "https://maps.app.goo.gl/h4YHHEDUNvz4S4a37",
+      "referencia": "A unas cuadras del mall marina y de la playa"
+    },
+    "mensaje_imprevisto_cierre": {
+      "template": "Hola te escribimos desde InnovaKine. Por una situacion imprevista, hoy no podremos atender y tu hora sera reagendada. Disculpa las molestias y gracias por tu comprension."
+    },
+    "politica_atraso": {
+      "descripcion": "Si el paciente avisa que llega tarde, se evalua si hay camara disponible en el siguiente bloque. Si hay, se permite la sesion completa. Si no, se puede acortar o reagendar."
+    },
+    "politica_cancelacion_plan": {
+      "descripcion": "Si un paciente no completa un plan promocional, las sesiones realizadas se recalculan a valor individual ($24.990). Se descuenta del monto pagado y se reembolsa el saldo en hasta 7 dias habiles."
+    },
+    "condiciones_claustrofobia": {
+      "descripcion": "La camara es individual pero no es pequena. Tiene sillon ajustable y reclinable. El paciente queda completamente adentro (cabeza incluida). Han ingresado personas de mas de 1.80m sin problema."
+    }
+  }
+}

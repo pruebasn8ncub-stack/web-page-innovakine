@@ -69,18 +69,20 @@ export function extractReactionInfo(
 
 In `handleMessagesUpsert`, after extracting `rawMessage`:
 
-1. Call `extractReactionInfo(rawMessage)` early
+1. Call `extractReactionInfo(rawMessage)` **before** `extractTextContent`/`extractMediaInfo`
 2. If it returns a reaction:
-   - Skip `extractTextContent` and `extractMediaInfo` (reactions have neither)
+   - Skip `extractTextContent` and `extractMediaInfo` entirely (reactions have neither)
    - Query the referenced message from DB by `wa_message_id` to get its content
    - Build content string: `Reaccionó {emoji} a: "{truncated original content}"`
-   - If referenced message not found: `Reaccionó {emoji}`
+   - If referenced message not found or content empty (e.g., media-only message): `Reaccionó {emoji}`
    - Set `messageType = "reactionMessage"`
-   - Insert message normally with this content
+   - Insert message normally with this content (both incoming and outgoing paths)
    - Update conversation `last_message` to the emoji only
-   - Trigger bot debounce if bot is active
-   - Save to N8N chat history for bot context
+   - Trigger bot debounce if bot is active (intentional — user confirmed bot should respond to reactions)
+   - N8N chat history: when bot is paused, webhook saves `[Cliente]: Reaccionó {emoji} a: "..."` to `n8n_chat_histories`. When bot is active, N8N's Postgres Chat Memory node reads the message from `whatsapp_messages` automatically — no extra save needed.
 3. If no reaction, continue with existing flow unchanged
+
+**Outgoing reactions (fromMe):** `extractReactionInfo` applies to both incoming and outgoing paths. Admin reactions are stored with the same content format. This keeps the conversation history complete.
 
 ### 3. `src/components/whatsapp/MessageBubble.tsx` — Reaction bubble
 
@@ -91,6 +93,8 @@ When `message.message_type === "reactionMessage"`:
 - Parse the content to extract emoji and reference: split on `" a: "` pattern
 - No delivery ticks (incoming client message)
 - Uses the existing `client` sender config for alignment/styling
+
+**Note:** The content format string `Reaccionó {emoji} a: "{text}"` in the webhook and the parser in MessageBubble must stay in sync. Add cross-referencing comments in both locations.
 
 ### 4. No changes required
 
@@ -107,6 +111,8 @@ When `message.message_type === "reactionMessage"`:
 3. **Duplicate reaction webhook**: Handled by existing idempotency check on `wa_message_id`
 4. **Reaction from admin (fromMe)**: Processed via the outgoing message path, stored for completeness
 5. **Multiple reactions to same message**: Each is a separate `reactionMessage` with unique `wa_message_id`
+6. **Reaction change (e.g., 👍 → ❤️)**: Evolution API sends removal (empty text, ignored) then new reaction (stored). Results in one reaction message, correct behavior.
+7. **Reaction to media-only message**: Referenced message may have empty content or AI description like `[Imagen: ...]`. Falls back to `Reaccionó {emoji}` when content is empty.
 
 ## Testing
 

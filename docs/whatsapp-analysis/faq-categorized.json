@@ -1,0 +1,354 @@
+{
+  "metadata": {
+    "generated_date": "2026-03-17",
+    "source": "Evolution API - WhatsApp Business (Innovakine)",
+    "conversations_analyzed": 407,
+    "total_qa_pairs": 1422,
+    "date_range": "2025-12-14 a 2026-03-17",
+    "purpose": "Base de conocimiento para chatbot Kini y FAQ de la landing page"
+  },
+  "categories": [
+    {
+      "name": "Informacion general del tratamiento",
+      "description": "Que es la camara hiperbarica, como funciona, que incluye la sesion",
+      "frequency": "muy_alta",
+      "faqs": [
+        {
+          "id": "general-01",
+          "question": "Que tipo de tratamiento ofrecen?",
+          "answer": "Estamos ofreciendo la sesion de evaluacion en tratamiento hiperbarico por $19.990. En ella podras conocer como funciona la terapia y recibir una primera dosis de oxigenacion, que ayuda a disminuir dolor, inflamacion y mejorar la energia.\n\nLa sesion completa dura 1 hora y 30 minutos:\n- 30 minutos de entrevista clinica para conocer tu caso\n- 1 hora de camara hiperbarica\n\nY si despues de tu sesion decides continuar con un plan, te dejamos un 20% de descuento.",
+          "variants": [
+            "Que tipo de tratamiento se ofrece?",
+            "Quiero info de camara hiperbarica",
+            "Hola q valor tiene??",
+            "Cuanto dura la sesion de evaluacion?",
+            "Me puedes dar informacion?"
+          ]
+        },
+        {
+          "id": "general-02",
+          "question": "Como funciona la camara hiperbarica?",
+          "answer": "La camara hiperbarica es un tratamiento donde respiras oxigeno a mayor presion, lo que ayuda a tus celulas a recuperarse y regenerarse. La presion de trabajo es de 1.5 ATA, que es la presion recomendada y segura.\n\nLa camara es individual, tiene un sillon ajustable y reclinable, asi que puedes estar sentada, semi sentada o completamente acostada, segun lo que te resulte mas comodo. Han ingresado personas de mas de 1,80 m sin ningun problema.",
+          "variants": [
+            "Con que presion funciona (ATA)?",
+            "El espacio es muy pequeno?",
+            "Es comoda la camara?"
+          ]
+        },
+        {
+          "id": "general-03",
+          "question": "Cuantas sesiones necesito?",
+          "answer": "Idealmente 2 a 3 veces por semana para que el tratamiento tenga el efecto optimo. Va a depender de varios factores, como las patologias de base, los habitos, el nivel de inflamacion y la adherencia al tratamiento.\n\nAlgunas personas sienten alivio desde las primeras sesiones, pero generalmente recomendamos un plan de 12 sesiones para lograr un efecto real.",
+          "variants": [
+            "Con que frecuencia se realizan?",
+            "Las sesiones son toda la semana?",
+            "En cuantas sesiones puede sentir alivio?"
+          ]
+        },
+        {
+          "id": "general-04",
+          "question": "Es segura la camara hiperbarica? Tengo hipertension.",
+          "answer": "La hipertension no es una contraindicacion absoluta para la camara hiperbarica. Si esta controlada y en tratamiento, generalmente se puede realizar sin problema. De todas formas, siempre hacemos una sesion de evaluacion previa y tomamos los parametros clinicos pre y post sesion.",
+          "variants": [
+            "Soy hipertensa, tiene alguna contraindicacion?",
+            "Puedo entrar si estoy resfriada?",
+            "Es seguro para adultos mayores?"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Precios y planes",
+      "description": "Valores de sesiones, planes, descuentos y formas de pago",
+      "frequency": "muy_alta",
+      "faqs": [
+        {
+          "id": "precio-01",
+          "question": "Cuanto cuesta la sesion de evaluacion?",
+          "answer": "La sesion de evaluacion tiene un costo promocional de $19.990. Incluye 30 minutos de entrevista clinica con la kinesiologa y 1 hora completa en camara hiperbarica.",
+          "variants": [
+            "Cual es su valor de consulta?",
+            "Cuanto sale?",
+            "Que valor tiene?"
+          ]
+        },
+        {
+          "id": "precio-02",
+          "question": "Cuanto cuestan las sesiones del plan?",
+          "answer": "Actualmente tenemos 20% de descuento:\n- 5 sesiones (relajacion, insomnio, manejo del estres): $103.990\n- 12 sesiones (dolor, inflamacion, recuperacion): $159.990\n\nSi haces la sesion de evaluacion y decides tomar un plan, la evaluacion cuenta como sesion n.1.\n\nSesiones individuales sin plan: $24.990 cada una.\n\nExiste la posibilidad de pagar en 2 cuotas: 1 al inicio y otra a la mitad del tratamiento.",
+          "variants": [
+            "Cuanto quedarian 10 sesiones?",
+            "Y despues cuanto seria el valor por sesion?",
+            "Se puede pagar en cuotas?"
+          ]
+        },
+        {
+          "id": "precio-03",
+          "question": "Tienen convenio con FONASA o Isapres?",
+          "answer": "Realizamos solo atencion particular. El tratamiento hiperbarico es particular, pero en caso de ser Kinesiologia si es reembolsable por Isapres, seguros complementarios de salud y bienestar laboral.",
+          "variants": [
+            "Atienden FONASA?",
+            "Es reembolsable por Isapre?",
+            "Mi amiga pregunta si es reembolsable por Isapre Mas Vida?"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Servicios adicionales",
+      "description": "Kinesiologia, masajes, recovery, presoterapia, drenaje linfatico",
+      "frequency": "alta",
+      "faqs": [
+        {
+          "id": "servicio-01",
+          "question": "Que otros servicios ofrecen ademas de la camara?",
+          "answer": "Ofrecemos:\n- Kinesiologia\n- Tratamiento hiperbarico (camara)\n- Masaje de 1 hora ($29.990): descontracturante, relajante o linfatico — puede incluir ventosas\n- Drenaje linfatico\n- Presoterapia\n- Full Recovery: camara + drenaje + presoterapia (ventosas incluidas)\n\nTambien tenemos el Plan Integral de Drenaje y Recuperacion que contempla 10 sesiones de drenaje linfatico y 10 sesiones en camara hiperbarica.",
+          "variants": [
+            "Recovery???",
+            "Que tratamientos tienen?",
+            "Hacen kinesiologia?"
+          ]
+        },
+        {
+          "id": "servicio-02",
+          "question": "Puedo combinar kinesiologia con camara hiperbarica?",
+          "answer": "Si, es una de nuestras principales ventajas. La combinacion de ambas terapias acelera significativamente la recuperacion. Nuestras kinesiologas disenan un protocolo integrado segun tu condicion.",
+          "variants": [
+            "Para camara hiperbarica solamente o kinesiologia tambien?",
+            "Ambas terapias juntas?"
+          ]
+        },
+        {
+          "id": "servicio-03",
+          "question": "Ofrecen kinesiologia a domicilio?",
+          "answer": "Si, ofrecemos kinesiologia a domicilio. El precio depende de la zona:\n- Valparaiso: $30.000/sesion\n- Vina del Mar: $35.000/sesion\n- Con Con: $40.000/sesion\nEs reembolsable por Isapre (entregamos boleta + informe kinesiologico).",
+          "variants": [
+            "Hacen atencion a domicilio?",
+            "Cuanto sale la kine a domicilio?"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ubicacion y horarios",
+      "description": "Donde esta la clinica, horarios de atencion, como llegar",
+      "frequency": "muy_alta",
+      "faqs": [
+        {
+          "id": "ubicacion-01",
+          "question": "Donde estan ubicados?",
+          "answer": "Estamos ubicados en Avenida Libertad 919, esquina 10 Norte, Edificio Alicahue, Oficina 91, Vina del Mar.",
+          "variants": [
+            "Donde atienden?",
+            "Entre que nortes estan?",
+            "De donde son?",
+            "Cual es la direccion?",
+            "Me puedes enviar la direccion?"
+          ]
+        },
+        {
+          "id": "ubicacion-02",
+          "question": "Cual es el horario de atencion?",
+          "answer": "Lunes a jueves de 09:00 a 19:00 hrs\nViernes de 09:00 a 18:00 hrs\n\nNo atendemos sabados ni domingos.",
+          "variants": [
+            "Hasta que hora atienden?",
+            "Atienden los sabados?",
+            "Los sabados atienden?"
+          ]
+        },
+        {
+          "id": "ubicacion-03",
+          "question": "Tienen estacionamiento?",
+          "answer": "No contamos con estacionamiento propio, pero hay estacionamientos disponibles en las cercanias.",
+          "variants": [
+            "Hay donde estacionar?"
+          ]
+        },
+        {
+          "id": "ubicacion-04",
+          "question": "Donde quedan exactamente? No soy de la zona.",
+          "answer": "Estamos en Avenida Libertad 919, esquina 10 Norte, Edificio Alicahue, Oficina 91, Vina del Mar. Es a unas cuadras del Mall Marina y de la playa. Te comparto el link de Google Maps: https://maps.app.goo.gl/h4YHHEDUNvz4S4a37",
+          "variants": [
+            "En que calles estan?",
+            "Es cerca de la plaza de armas?",
+            "En cuanto norte es?"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Agendamiento de citas",
+      "description": "Como agendar, reagendar, cancelar horas y datos requeridos",
+      "frequency": "muy_alta",
+      "faqs": [
+        {
+          "id": "agenda-01",
+          "question": "Como puedo agendar una hora?",
+          "answer": "Indicanos que dia te acomoda y si prefieres horario AM o PM, y te damos los horarios disponibles. Para concretar la reserva necesitamos:\n- Nombre completo\n- Edad\n- RUT\n- Diagnosticos medicos\n- Medicamentos que consume actualmente",
+          "variants": [
+            "Quiero agendar una cita",
+            "Se puede agendar una cita para hoy?",
+            "Tiene hora disponible?",
+            "Como es el proceso para sacar hora?"
+          ]
+        },
+        {
+          "id": "agenda-02",
+          "question": "Puedo reagendar mi cita?",
+          "answer": "Si, no hay problema. Indicanos que dia te acomoda y te damos nuevos horarios disponibles. Agradecemos que nos avises con anticipacion.",
+          "variants": [
+            "Podemos reagendar?",
+            "No podre asistir hoy",
+            "Sera posible adelantar hora?",
+            "Necesito cancelar la hora"
+          ]
+        },
+        {
+          "id": "agenda-03",
+          "question": "Puedo agendar para dos personas?",
+          "answer": "Si, tenemos doble cupo. Indicanos que dia les acomoda y revisamos horarios disponibles para que asistan en conjunto.",
+          "variants": [
+            "Necesito agendar dos sesiones de evaluacion",
+            "Ambos tomaremos las sesiones"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Condiciones medicas especificas",
+      "description": "Consultas sobre patologias puntuales y si la terapia aplica",
+      "frequency": "alta",
+      "faqs": [
+        {
+          "id": "medico-01",
+          "question": "Sirve para artrosis?",
+          "answer": "La camara hiperbarica ayuda en la artrosis porque mejora la oxigenacion de los tejidos, disminuye la inflamacion y el dolor, y favorece la recuperacion muscular y articular. En adultos mayores suele usarse como complemento a la kinesiologia.",
+          "variants": [
+            "Artrosis columna adulto mayor",
+            "Tengo principio de artrosis en la rodilla"
+          ]
+        },
+        {
+          "id": "medico-02",
+          "question": "Sirve para dolores de espalda / lumbago?",
+          "answer": "La terapia hiperbarica ayuda con la disminucion del dolor de espalda ya que aumenta la oxigenacion de los tejidos, disminuye la inflamacion y favorece la relajacion muscular. La primera sesion es evaluativa para revisar tu caso y ver tu tolerancia.",
+          "variants": [
+            "Tengo lumbago",
+            "Me interesa para dolor lumbar",
+            "Tengo lumbo ciatica"
+          ]
+        },
+        {
+          "id": "medico-03",
+          "question": "Sirve para dolores de cabeza / migranas?",
+          "answer": "Si, el tratamiento con camara hiperbarica puede ayudar en casos de dolores frecuentes de cabeza ya que aumenta la oxigenacion cerebral, disminuye la inflamacion y mejora la circulacion. Esto puede contribuir a reducir la frecuencia e intensidad de las crisis.",
+          "variants": [
+            "Me sirve para los dolores de cabeza?",
+            "Tengo migranas"
+          ]
+        },
+        {
+          "id": "medico-04",
+          "question": "Sirve para fibromialgia?",
+          "answer": "La camara hiperbarica es util para fibromialgia, dolor cronico, lesiones deportivas, cicatrizacion y problemas de sueno. Ayuda a disminuir dolor e inflamacion y mejora la oxigenacion de los tejidos.",
+          "variants": [
+            "Tengo fibromialgia muchos dolores",
+            "Dolor cronico"
+          ]
+        },
+        {
+          "id": "medico-05",
+          "question": "Sirve post-cirugia?",
+          "answer": "Si, la camara hiperbarica acelera la recuperacion post-quirurgica al mejorar la oxigenacion de tejidos y la cicatrizacion. La combinacion con kinesiologia potencia los resultados.",
+          "variants": [
+            "Mi esposo le dieron el alta, podemos retomar?",
+            "Recuperacion deportiva"
+          ]
+        },
+        {
+          "id": "medico-06",
+          "question": "Sirve para contractura escapular / dolor de hombro?",
+          "answer": "Si, la camara hiperbarica tiene beneficios en disminuir la inflamacion, mejorar la oxigenacion muscular, acelerar la recuperacion de tejidos sobrecargados y reducir significativamente el dolor. Previo al ingreso de camara se realiza una evaluacion.",
+          "variants": [
+            "Contractura en la escapula con irradiacion al brazo",
+            "Dolor de hombro"
+          ]
+        },
+        {
+          "id": "medico-07",
+          "question": "Sirve para insuficiencia venosa / piernas hinchadas?",
+          "answer": "Si, para insuficiencia venosa y piernas hinchadas ofrecemos el Plan Integral de Drenaje y Recuperacion que combina drenaje linfatico manual, presoterapia y camara hiperbarica. Esta combinacion favorece el retorno linfatico y la disminucion de edema.",
+          "variants": [
+            "Piernas cansadas y pesadas",
+            "Hinchazon en las piernas",
+            "Retencion de liquidos"
+          ]
+        },
+        {
+          "id": "medico-08",
+          "question": "Me da miedo entrar, soy claustrofobica",
+          "answer": "Es totalmente comprensible la duda. La camara es individual pero no es pequena ni incomoda. Tiene un sillon ajustable y reclinable, asi que puedes estar sentada, semi sentada o completamente acostada. Han ingresado personas de mas de 1,80 m sin ningun problema. En la evaluacion probamos tu tolerancia para que te sientas comoda.",
+          "variants": [
+            "El espacio es muy pequeno?",
+            "Mi cabeza queda afuera o adentro?",
+            "Me da miedo ahogarme"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Recordatorios y confirmaciones",
+      "description": "Formato de recordatorio de citas e indicaciones previas",
+      "frequency": "muy_alta",
+      "faqs": [
+        {
+          "id": "recordatorio-01",
+          "question": "Que indicaciones debo seguir antes de la sesion?",
+          "answer": "Indicaciones previas a la sesion:\n- No fumar 2 horas antes y despues del tratamiento\n- Ropa comoda y sin metal\n- No utilizar perfumes\n- Avisanos si estas resfriado/a",
+          "variants": []
+        }
+      ]
+    },
+    {
+      "name": "Politicas de cancelacion y reembolso",
+      "description": "Que pasa si no completo el plan, reembolsos, recalculo",
+      "frequency": "baja",
+      "faqs": [
+        {
+          "id": "politica-01",
+          "question": "Que pasa si no completo el plan?",
+          "answer": "Cuando un plan promocional no se completa, las sesiones realizadas se recalculan a valor individual ($24.990), ya que el precio preferencial aplica al tomar el plan completo. La diferencia se descuenta del monto pagado y se reembolsa el saldo en un plazo de hasta 7 dias habiles.",
+          "variants": [
+            "Me pueden devolver el resto del dinero?",
+            "No puedo seguir con el tratamiento"
+          ]
+        },
+        {
+          "id": "politica-02",
+          "question": "Que pasa si llego tarde?",
+          "answer": "Avisanos con anticipacion. Si hay una camara disponible en el siguiente bloque, podemos hacer la sesion completa. Si no hay disponibilidad, podemos acortar la sesion o reagendar.",
+          "variants": [
+            "Voy atrasado",
+            "Puedo llegar 15 minutos tarde?"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Formas de pago y datos de transferencia",
+      "description": "Como pagar, datos bancarios, facilidades de pago",
+      "frequency": "media",
+      "faqs": [
+        {
+          "id": "pago-01",
+          "question": "Como puedo pagar?",
+          "answer": "Aceptamos:\n- Tarjeta de credito: en cuotas que estimes convenientes\n- Tarjeta de debito\n- Efectivo\n- Transferencia bancaria\n\nDatos de transferencia:\nINNOVAKINE SPA\nRUT: 78.215.314-5\nCuenta Corriente Scotiabank Chile: 992415495\nEmail: INNOVAKINEVINA@GMAIL.COM",
+          "variants": [
+            "Datos de transferencia",
+            "Aceptan tarjeta?"
+          ]
+        }
+      ]
+    }
+  ]
+}
