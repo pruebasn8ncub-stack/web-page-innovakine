@@ -58,7 +58,7 @@ export default function ResumePopup({ isOpen, onClose, onResume, defaultMessage 
                             className="w-full resize-none bg-[#f5f8fc] border-0 rounded-2xl px-4 py-3 text-sm text-[#0d1f35] focus:outline-none focus:ring-2 focus:ring-teal/20 focus:bg-white transition-all mb-6"
                         />
 
-                        <div className="flex gap-3 justify-end flex-wrap">
+                        <div className="flex gap-3 justify-end">
                             <button
                                 type="button"
                                 onClick={onClose}
@@ -69,14 +69,14 @@ export default function ResumePopup({ isOpen, onClose, onResume, defaultMessage 
                             <button
                                 type="button"
                                 onClick={() => onResume(false, message)}
-                                className="px-5 py-2.5 rounded-xl text-sm font-medium text-[#0d1f35] border border-slate-200 hover:border-slate-300 transition-all"
+                                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-teal to-blue-500 hover:shadow-lg shadow-md transition-all"
                             >
-                                Reactivar sin mensaje
+                                Solo reactivar
                             </button>
                             <button
                                 type="button"
                                 onClick={() => onResume(true, message)}
-                                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-teal to-blue-500 hover:shadow-lg shadow-md transition-all"
+                                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-emerald-500 to-teal hover:shadow-lg shadow-md transition-all"
                             >
                                 Reactivar y enviar
                             </button>
