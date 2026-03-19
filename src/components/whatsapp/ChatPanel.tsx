@@ -118,6 +118,21 @@ export default function ChatPanel({
             {/* Header */}
             <div className="flex items-center justify-between gap-4 bg-white shadow-sm border-b border-slate-100 px-5 py-3 flex-shrink-0">
                 <div className="flex items-center gap-3">
+                    {/* Edit name button */}
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setEditName(conversation.contact_name);
+                            setIsEditingName(true);
+                            setTimeout(() => nameInputRef.current?.select(), 0);
+                        }}
+                        title="Editar nombre del contacto"
+                        className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-100 hover:bg-teal/10 flex items-center justify-center transition-colors group"
+                    >
+                        <Pencil className="w-4 h-4 text-slate-400 group-hover:text-teal transition-colors" />
+                    </button>
+
+                    {/* Avatar */}
                     {conversation.contact_avatar_url ? (
                         <img
                             src={conversation.contact_avatar_url}
@@ -138,6 +153,8 @@ export default function ChatPanel({
                     >
                         {initials || <User className="w-4 h-4" />}
                     </div>
+
+                    {/* Name / Phone */}
                     <div className="min-w-0">
                         {isEditingName ? (
                             <input
@@ -165,21 +182,9 @@ export default function ChatPanel({
                                 className="font-bold text-sm text-[#0d1f35] leading-tight bg-slate-50 border border-teal/30 rounded-md px-2 py-0.5 w-full focus:outline-none focus:ring-2 focus:ring-teal/20"
                             />
                         ) : (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setEditName(conversation.contact_name);
-                                    setIsEditingName(true);
-                                    setTimeout(() => nameInputRef.current?.select(), 0);
-                                }}
-                                className="group flex items-center gap-1.5 text-left"
-                                title="Editar nombre del contacto"
-                            >
-                                <p className="font-bold text-sm text-[#0d1f35] leading-tight truncate">
-                                    {conversation.contact_name}
-                                </p>
-                                <Pencil className="w-3 h-3 text-slate-300 group-hover:text-teal transition-colors flex-shrink-0" />
-                            </button>
+                            <p className="font-bold text-sm text-[#0d1f35] leading-tight truncate">
+                                {conversation.contact_name}
+                            </p>
                         )}
                         <p className="text-xs text-[#5e7a9a] leading-tight">
                             {conversation.phone_number}
