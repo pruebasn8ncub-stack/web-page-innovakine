@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Loader2, ChevronDown, Bot } from "lucide-react";
+import { Loader2, ChevronDown, Bot, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getAvatarGradient, getInitials } from "@/lib/avatar";
 import type { WhatsAppConversation, WhatsAppMessage, WhatsAppBotSettings } from "@/types/whatsapp";
@@ -131,7 +131,7 @@ export default function ChatPanel({
                             conversation.contact_avatar_url ? "hidden" : ""
                         )}
                     >
-                        {initials || "?"}
+                        {initials || <User className="w-4 h-4" />}
                     </div>
                     <div>
                         <p className="font-bold text-sm text-[#0d1f35] leading-tight">

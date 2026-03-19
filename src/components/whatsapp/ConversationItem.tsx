@@ -1,5 +1,6 @@
 "use client";
 
+import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getAvatarGradient, getInitials } from "@/lib/avatar";
 import type { WhatsAppConversation } from "@/types/whatsapp";
@@ -94,7 +95,7 @@ export default function ConversationItem({
                     conversation.contact_avatar_url ? "hidden" : ""
                 )}
             >
-                {initials || "?"}
+                {initials || <User className="w-5 h-5" />}
             </div>
 
             {/* Body */}

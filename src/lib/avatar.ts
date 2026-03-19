@@ -18,7 +18,8 @@ export function getAvatarGradient(name: string): string {
 }
 
 export function getInitials(name: string): string {
-    const parts = name.trim().split(/\s+/);
+    // Filter out non-letter parts (phone numbers, dots, symbols)
+    const parts = name.trim().split(/\s+/).filter((p) => /[a-zA-ZÀ-ÿ]/.test(p));
     const first = parts[0]?.[0] ?? "";
     const second = parts[1]?.[0] ?? "";
     return (first + second).toUpperCase();
