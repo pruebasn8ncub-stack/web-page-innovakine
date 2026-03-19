@@ -23,6 +23,7 @@ interface ChatPanelProps {
     onLoadMore: () => void;
     hasMore: boolean;
     isLoadingMore: boolean;
+    isLoadingChat: boolean;
 }
 
 function formatDateDivider(timestamp: string): string {
@@ -72,6 +73,7 @@ export default function ChatPanel({
     onLoadMore,
     hasMore,
     isLoadingMore,
+    isLoadingChat,
 }: ChatPanelProps) {
     const [showPausePopup, setShowPausePopup] = useState(false);
     const [showResumePopup, setShowResumePopup] = useState(false);
@@ -180,6 +182,47 @@ export default function ChatPanel({
                         backgroundRepeat: "repeat",
                     }}
                 >
+                    {/* Loading skeleton */}
+                    {isLoadingChat && messages.length === 0 && (
+                        <div className="flex flex-col gap-3 animate-pulse">
+                            {/* Incoming message skeleton */}
+                            <div className="flex justify-start">
+                                <div className="bg-white/80 rounded-xl rounded-tl-sm shadow-sm px-4 py-3 max-w-[55%]">
+                                    <div className="h-3 bg-slate-200 rounded-full w-32 mb-2" />
+                                    <div className="h-3 bg-slate-200 rounded-full w-48" />
+                                </div>
+                            </div>
+                            {/* Outgoing message skeleton */}
+                            <div className="flex justify-end">
+                                <div className="bg-[#d9fdd3]/80 rounded-xl rounded-tr-sm shadow-sm px-4 py-3 max-w-[55%]">
+                                    <div className="h-3 bg-emerald-200 rounded-full w-40 mb-2" />
+                                    <div className="h-3 bg-emerald-200 rounded-full w-24" />
+                                </div>
+                            </div>
+                            {/* Incoming */}
+                            <div className="flex justify-start">
+                                <div className="bg-white/80 rounded-xl rounded-tl-sm shadow-sm px-4 py-3 max-w-[55%]">
+                                    <div className="h-3 bg-slate-200 rounded-full w-52 mb-2" />
+                                    <div className="h-3 bg-slate-200 rounded-full w-36 mb-2" />
+                                    <div className="h-3 bg-slate-200 rounded-full w-20" />
+                                </div>
+                            </div>
+                            {/* Outgoing */}
+                            <div className="flex justify-end">
+                                <div className="bg-[#d9fdd3]/80 rounded-xl rounded-tr-sm shadow-sm px-4 py-3 max-w-[55%]">
+                                    <div className="h-3 bg-emerald-200 rounded-full w-28" />
+                                </div>
+                            </div>
+                            {/* Incoming */}
+                            <div className="flex justify-start">
+                                <div className="bg-white/80 rounded-xl rounded-tl-sm shadow-sm px-4 py-3 max-w-[55%]">
+                                    <div className="h-3 bg-slate-200 rounded-full w-44 mb-2" />
+                                    <div className="h-3 bg-slate-200 rounded-full w-32" />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Load more */}
                     {hasMore && (
                         <div className="flex justify-center mb-4">

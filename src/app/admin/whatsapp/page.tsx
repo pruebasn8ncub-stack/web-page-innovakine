@@ -52,6 +52,7 @@ export default function WhatsAppPage() {
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(false);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [isLoadingChat, setIsLoadingChat] = useState(false);
     const [realtimeConnected, setRealtimeConnected] = useState(true);
 
     // Ref to keep the selectedId current inside Realtime callbacks
@@ -158,6 +159,7 @@ export default function WhatsAppPage() {
         // Clear previous messages immediately when switching conversations
         setMessages([]);
         setHasMore(false);
+        setIsLoadingChat(true);
 
         const abortController = new AbortController();
 
@@ -186,6 +188,7 @@ export default function WhatsAppPage() {
                 const json: MessagesResponse = await res.json();
                 setMessages(json.data.messages);
                 setHasMore(json.data.hasMore);
+                setIsLoadingChat(false);
             }
         };
 
@@ -561,6 +564,7 @@ export default function WhatsAppPage() {
                     onLoadMore={handleLoadMore}
                     hasMore={hasMore}
                     isLoadingMore={isLoadingMore}
+                    isLoadingChat={isLoadingChat}
                 />
             ) : (
                 <EmptyChat />
