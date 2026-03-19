@@ -190,7 +190,12 @@ export default function ChatPanel({
                 <TicketBanner
                     reason={conversation.needs_human_reason}
                     since={conversation.needs_human_since}
+                    contactName={conversation.contact_name}
                     onResolve={() => onResolveTicket(conversation.id)}
+                    onReply={(message) => {
+                        onSendMessage(message);
+                        onResolveTicket(conversation.id);
+                    }}
                 />
             )}
 
