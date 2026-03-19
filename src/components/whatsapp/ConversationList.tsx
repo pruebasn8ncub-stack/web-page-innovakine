@@ -159,24 +159,26 @@ export default function ConversationList({
                     {/* Row 2: Bot status + Atención */}
                     <div className="flex gap-1.5">
                         {(["active", "paused"] as const).map((v) => {
-                            const isActive = botFilter === v && !showNeedsHuman;
+                            const isSelected = botFilter === v && !showNeedsHuman;
                             return (
                                 <button
                                     key={v}
                                     type="button"
                                     onClick={() => { setBotFilter(botFilter === v ? "all" : v); setShowNeedsHuman(false); }}
                                     className={cn(
-                                        "flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[0.68rem] font-medium transition-all border",
-                                        isActive
-                                            ? v === "active"
-                                                ? "bg-teal/10 text-teal border-teal/20"
-                                                : "bg-red-50 text-red-500 border-red-200/50"
-                                            : "bg-transparent text-[#5e7a9a] border-slate-200 hover:bg-[#f5f8fc]"
+                                        "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.68rem] font-medium transition-all border",
+                                        v === "active"
+                                            ? isSelected
+                                                ? "bg-emerald-50 text-emerald-600 border-emerald-200 shadow-[0_0_8px_rgba(16,185,129,0.15)]"
+                                                : "bg-emerald-50/40 text-emerald-500/70 border-emerald-100 hover:bg-emerald-50 hover:shadow-[0_0_6px_rgba(16,185,129,0.1)]"
+                                            : isSelected
+                                                ? "bg-red-50 text-red-500 border-red-200 shadow-[0_0_8px_rgba(239,68,68,0.15)]"
+                                                : "bg-red-50/40 text-red-400/70 border-red-100 hover:bg-red-50 hover:shadow-[0_0_6px_rgba(239,68,68,0.1)]"
                                     )}
                                 >
                                     <span className={cn(
                                         "w-1.5 h-1.5 rounded-full",
-                                        v === "active" ? "bg-teal" : "bg-red-400"
+                                        v === "active" ? "bg-emerald-500" : "bg-red-400"
                                     )} />
                                     {v === "active" ? "Activo" : "Pausado"}
                                 </button>
