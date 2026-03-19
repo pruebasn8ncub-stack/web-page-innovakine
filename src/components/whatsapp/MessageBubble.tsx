@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { FileText, Clock, X, Play, Pause, Mic, Download, ImageIcon, Volume2 } from "lucide-react";
+import { FileText, Clock, X, Play, Pause, Mic, Download, ImageIcon, Volume2, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { WhatsAppMessage, SenderType } from "@/types/whatsapp";
 
@@ -380,7 +380,7 @@ function parseContent(content: string | null, mediaType: string | null) {
 const senderConfig: Record<SenderType, {
     align: string;
     bubble: string;
-    label: string | null;
+    label: React.ReactNode;
     labelColor: string;
     roundedClass: string;
 }> = {
@@ -394,7 +394,7 @@ const senderConfig: Record<SenderType, {
     bot: {
         align: "justify-end",
         bubble: "bg-gradient-to-br from-[var(--cyan-light)] to-white border border-[var(--cyan)]/10 shadow-[0_1px_3px_rgba(26,94,168,0.06)]",
-        label: "Kini",
+        label: <Bot className="w-3.5 h-3.5 inline-block" />,
         labelColor: "text-[var(--cyan)]",
         roundedClass: "rounded-2xl rounded-tr-sm",
     },

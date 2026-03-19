@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "lucide-react";
+import { User, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getAvatarGradient, getInitials, getDisplayName } from "@/lib/avatar";
 import type { WhatsAppConversation } from "@/types/whatsapp";
@@ -59,7 +59,7 @@ export default function ConversationItem({
     // Show prefix based on who sent the last message
     const lastMessagePrefix = !conversation.last_message_from_me ? null :
         conversation.last_message_sender_type === "bot" ? (
-            <span className="text-blue-400 mr-0.5">Kini: </span>
+            <span className="text-blue-400 mr-0.5 inline-flex items-center gap-0.5"><Bot className="w-3 h-3" /></span>
         ) : (
             <span className="text-[#5e7a9a]/60 mr-0.5">Tu: </span>
         );
