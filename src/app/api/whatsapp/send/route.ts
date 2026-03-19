@@ -24,6 +24,7 @@ const sendSchema = z.object({
   content: z.string().min(1).max(4096),
   mediaUrl: z.string().url().optional(),
   mediaType: z.enum(['image', 'video', 'audio', 'document']).optional(),
+  pauseBot: z.boolean().optional().default(true),
 });
 
 // ---------------------------------------------------------------------------
@@ -78,7 +79,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     const body = await request.json();
-    const { conversationId, content, mediaUrl, mediaType } = sendSchema.parse(body);
+    const { conversationId, content, mediaUrl, mediaType, pauseBot } = sendSchema.parse(body);
 
     // Fetch conversation (bypass RLS with admin client)
     const { data: conv, error: convError } = await supabaseAdmin
@@ -138,14 +139,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       },
     });
 
-    // Auto-pause bot, cancel pending debounce, and resolve needs_human
+    // Resolve needs_human if active
     const resolveFields = conversation.needs_human ? {
       needs_human: false,
       needs_human_status: 'resolved' as const,
       needs_human_resolved_at: new Date().toISOString(),
     } : {};
 
-    if (!conversation.is_bot_paused) {
+    // Pause bot only if requested (default: true for backward compat)
+    if (pauseBot && !conversation.is_bot_paused) {
       await supabaseAdmin
         .from('whatsapp_conversations')
         .update({
@@ -156,7 +158,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ...resolveFields,
         })
         .eq('id', conversationId);
-    } else if (conversation.needs_human) {
+    } else if (Object.keys(resolveFields).length > 0) {
       await supabaseAdmin
         .from('whatsapp_conversations')
         .update(resolveFields)

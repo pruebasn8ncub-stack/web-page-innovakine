@@ -352,7 +352,7 @@ export default function WhatsAppPage() {
     // Handlers
     // -----------------------------------------------------------------------
 
-    const handleSendMessage = async (content: string) => {
+    const handleSendMessage = async (content: string, pauseBot?: boolean) => {
         if (!selectedId) return;
 
         // Optimistic: show message immediately with "pending" status
@@ -385,7 +385,7 @@ export default function WhatsAppPage() {
 
         const res = await apiFetch("/api/whatsapp/send", {
             method: "POST",
-            body: JSON.stringify({ conversationId: selectedId, content }),
+            body: JSON.stringify({ conversationId: selectedId, content, pauseBot: pauseBot ?? true }),
         });
 
         if (res.ok) {

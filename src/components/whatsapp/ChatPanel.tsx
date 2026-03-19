@@ -16,7 +16,7 @@ interface ChatPanelProps {
     messages: WhatsAppMessage[];
     botSettings: WhatsAppBotSettings;
     userRole: string;
-    onSendMessage: (content: string) => void;
+    onSendMessage: (content: string, pauseBot?: boolean) => void;
     onBotPause: (sendTransition: boolean, message: string) => void;
     onBotResume: (sendTransition: boolean, message: string) => void;
     onResolveTicket: (conversationId: string) => void;
@@ -256,7 +256,10 @@ export default function ChatPanel({
             </div>
 
             {/* Message Input */}
-            <MessageInput onSend={onSendMessage} />
+            <MessageInput
+                onSend={onSendMessage}
+                isBotActive={!conversation.is_bot_paused}
+            />
 
             {/* Popups */}
             <PausePopup

@@ -6,13 +6,15 @@ import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 import { cn } from "@/lib/utils";
 
 interface MessageInputProps {
-    onSend: (content: string) => void;
+    onSend: (content: string, pauseBot?: boolean) => void;
+    isBotActive?: boolean;
     disabled?: boolean;
 }
 
-export default function MessageInput({ onSend, disabled = false }: MessageInputProps) {
+export default function MessageInput({ onSend, isBotActive = false, disabled = false }: MessageInputProps) {
     const [value, setValue] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [showBotAlert, setShowBotAlert] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const emojiPickerRef = useRef<HTMLDivElement>(null);
 
@@ -44,14 +46,36 @@ export default function MessageInput({ onSend, disabled = false }: MessageInputP
         resizeTextarea();
     }
 
-    function handleSend() {
-        const trimmed = value.trim();
-        if (!trimmed || disabled) return;
-        onSend(trimmed);
+    function clearInput() {
         setValue("");
         if (textareaRef.current) {
             textareaRef.current.style.height = "auto";
         }
+    }
+
+    function handleSend() {
+        const trimmed = value.trim();
+        if (!trimmed || disabled) return;
+
+        if (isBotActive) {
+            setShowBotAlert(true);
+            return;
+        }
+
+        onSend(trimmed);
+        clearInput();
+    }
+
+    function handleSendWithPause() {
+        onSend(value.trim(), true);
+        clearInput();
+        setShowBotAlert(false);
+    }
+
+    function handleSendWithoutPause() {
+        onSend(value.trim(), false);
+        clearInput();
+        setShowBotAlert(false);
     }
 
     function handleKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
@@ -160,6 +184,41 @@ export default function MessageInput({ onSend, disabled = false }: MessageInputP
             >
                 <Send className="w-4 h-4" />
             </button>
+
+            {/* Bot pause alert */}
+            {showBotAlert && (
+                <div className="absolute bottom-full left-0 right-0 mb-0 bg-white border border-slate-200 rounded-t-xl shadow-lg z-50 px-5 py-4">
+                    <p className="text-sm text-navy font-medium mb-1">
+                        Kini esta activo en esta conversacion
+                    </p>
+                    <p className="text-xs text-[#5e7a9a] mb-4">
+                        Enviar un mensaje puede desactivar el chatbot para este paciente. Elige como proceder:
+                    </p>
+                    <div className="flex items-center justify-end gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setShowBotAlert(false)}
+                            className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#5e7a9a] hover:bg-slate-100 transition-all"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSendWithoutPause}
+                            className="px-3 py-1.5 rounded-lg text-xs font-medium text-teal border border-teal/30 hover:bg-teal/5 transition-all"
+                        >
+                            Enviar sin desactivar
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSendWithPause}
+                            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-500 text-white hover:bg-red-600 transition-all"
+                        >
+                            Enviar y desactivar Kini
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
