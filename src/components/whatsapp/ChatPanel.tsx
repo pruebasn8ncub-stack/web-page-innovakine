@@ -162,24 +162,25 @@ export default function ChatPanel({
                                 type="text"
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
+                                placeholder={conversation.phone_number}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter") {
-                                        const trimmed = editName.trim();
-                                        if (trimmed && trimmed !== conversation.contact_name) {
-                                            onRenameContact(conversation.id, trimmed);
+                                        const newName = editName.trim() || conversation.phone_number;
+                                        if (newName !== conversation.contact_name) {
+                                            onRenameContact(conversation.id, newName);
                                         }
                                         setIsEditingName(false);
                                     }
                                     if (e.key === "Escape") setIsEditingName(false);
                                 }}
                                 onBlur={() => {
-                                    const trimmed = editName.trim();
-                                    if (trimmed && trimmed !== conversation.contact_name) {
-                                        onRenameContact(conversation.id, trimmed);
+                                    const newName = editName.trim() || conversation.phone_number;
+                                    if (newName !== conversation.contact_name) {
+                                        onRenameContact(conversation.id, newName);
                                     }
                                     setIsEditingName(false);
                                 }}
-                                className="font-bold text-sm text-[#0d1f35] leading-tight bg-slate-50 border border-teal/30 rounded-md px-2 py-0.5 w-full focus:outline-none focus:ring-2 focus:ring-teal/20"
+                                className="font-bold text-sm text-[#0d1f35] leading-tight bg-slate-50 border border-teal/30 rounded-md px-2 py-0.5 w-full focus:outline-none focus:ring-2 focus:ring-teal/20 placeholder:text-slate-300 placeholder:font-normal"
                             />
                         ) : (
                             <p className="font-bold text-sm text-[#0d1f35] leading-tight truncate">
