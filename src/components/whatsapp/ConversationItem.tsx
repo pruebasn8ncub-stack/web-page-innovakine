@@ -2,7 +2,7 @@
 
 import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getAvatarGradient, getInitials } from "@/lib/avatar";
+import { getAvatarGradient, getInitials, getDisplayName } from "@/lib/avatar";
 import type { WhatsAppConversation } from "@/types/whatsapp";
 
 interface ConversationItemProps {
@@ -51,9 +51,10 @@ export default function ConversationItem({
     isSelected,
     onClick,
 }: ConversationItemProps) {
-    const initials = getInitials(conversation.contact_name);
+    const displayName = getDisplayName(conversation.custom_name, conversation.contact_name);
+    const initials = getInitials(displayName);
     const timeLabel = formatTime(conversation.last_message_at);
-    const avatarGradient = getAvatarGradient(conversation.contact_name);
+    const avatarGradient = getAvatarGradient(displayName);
 
     // Show prefix based on who sent the last message
     const lastMessagePrefix = !conversation.last_message_from_me ? null :
@@ -103,7 +104,7 @@ export default function ConversationItem({
                 <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 min-w-0">
                         <span className="font-semibold text-sm text-[#0d1f35] truncate">
-                            {conversation.contact_name}
+                            {displayName}
                         </span>
                         {conversation.needs_human && (
                             <span className="text-[0.6rem] leading-none px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-600 font-medium flex-shrink-0">

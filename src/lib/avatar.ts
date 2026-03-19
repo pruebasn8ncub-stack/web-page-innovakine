@@ -17,6 +17,10 @@ export function getAvatarGradient(name: string): string {
     return AVATAR_GRADIENTS[Math.abs(hash) % AVATAR_GRADIENTS.length];
 }
 
+export function getDisplayName(customName: string | null, contactName: string): string {
+    return customName || contactName;
+}
+
 export function getInitials(name: string): string {
     // Filter out non-letter parts (phone numbers, dots, symbols)
     const parts = name.trim().split(/\s+/).filter((p) => /[a-zA-ZÀ-ÿ]/.test(p));

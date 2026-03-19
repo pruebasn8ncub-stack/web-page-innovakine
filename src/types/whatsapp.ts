@@ -7,6 +7,7 @@ export interface WhatsAppConversation {
   jid: string;
   phone_number: string;
   contact_name: string;
+  custom_name: string | null;
   contact_avatar_url: string | null;
   last_message: string;
   last_message_at: string;

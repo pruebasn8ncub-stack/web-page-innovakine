@@ -481,19 +481,20 @@ export default function WhatsAppPage() {
         }
     };
 
-    const handleRenameContact = async (conversationId: string, newName: string) => {
-        // Optimistic update
-        setConversations((prev) =>
-            prev.map((c) => c.id === conversationId ? { ...c, contact_name: newName } : c)
+    const handleRenameContact = async (conversationId: string, customName: string | null) => {
+        // Optimistic update — custom_name is the admin-set name, contact_name is the WhatsApp pushName
+        const prev = conversations.find((c) => c.id === conversationId);
+        setConversations((list) =>
+            list.map((c) => c.id === conversationId ? { ...c, custom_name: customName } : c)
         );
         const { error } = await supabase
             .from("whatsapp_conversations")
-            .update({ contact_name: newName })
+            .update({ custom_name: customName })
             .eq("id", conversationId);
         if (error) {
-            // Revert on failure — refetch conversations
-            setConversations((prev) =>
-                prev.map((c) => c.id === conversationId ? { ...c, contact_name: c.contact_name } : c)
+            // Revert on failure
+            setConversations((list) =>
+                list.map((c) => c.id === conversationId ? { ...c, custom_name: prev?.custom_name ?? null } : c)
             );
         }
     };

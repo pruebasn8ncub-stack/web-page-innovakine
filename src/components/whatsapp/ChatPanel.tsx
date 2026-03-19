@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2, ChevronDown, Bot, User, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getAvatarGradient, getInitials } from "@/lib/avatar";
+import { getAvatarGradient, getInitials, getDisplayName } from "@/lib/avatar";
 import type { WhatsAppConversation, WhatsAppMessage, WhatsAppBotSettings } from "@/types/whatsapp";
 import TicketBanner from "./TicketBanner";
 import MessageBubble from "./MessageBubble";
@@ -24,7 +24,7 @@ interface ChatPanelProps {
     hasMore: boolean;
     isLoadingMore: boolean;
     isLoadingChat: boolean;
-    onRenameContact: (conversationId: string, newName: string) => void;
+    onRenameContact: (conversationId: string, customName: string | null) => void;
 }
 
 function formatDateDivider(timestamp: string): string {
@@ -110,8 +110,9 @@ export default function ChatPanel({
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
 
-    const initials = getInitials(conversation.contact_name);
-    const avatarGradient = getAvatarGradient(conversation.contact_name);
+    const displayName = getDisplayName(conversation.custom_name, conversation.contact_name);
+    const initials = getInitials(displayName);
+    const avatarGradient = getAvatarGradient(displayName);
 
     return (
         <div className="flex-1 flex flex-col h-full">
@@ -122,7 +123,7 @@ export default function ChatPanel({
                     <button
                         type="button"
                         onClick={() => {
-                            setEditName(conversation.contact_name);
+                            setEditName(conversation.custom_name || "");
                             setIsEditingName(true);
                             setTimeout(() => nameInputRef.current?.select(), 0);
                         }}
@@ -136,7 +137,7 @@ export default function ChatPanel({
                     {conversation.contact_avatar_url ? (
                         <img
                             src={conversation.contact_avatar_url}
-                            alt={conversation.contact_name}
+                            alt={displayName}
                             className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                             onError={(e) => {
                                 e.currentTarget.style.display = "none";
@@ -162,29 +163,25 @@ export default function ChatPanel({
                                 type="text"
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
-                                placeholder={conversation.phone_number}
+                                placeholder={conversation.contact_name}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter") {
-                                        const newName = editName.trim() || conversation.phone_number;
-                                        if (newName !== conversation.contact_name) {
-                                            onRenameContact(conversation.id, newName);
-                                        }
+                                        const trimmed = editName.trim();
+                                        onRenameContact(conversation.id, trimmed || null);
                                         setIsEditingName(false);
                                     }
                                     if (e.key === "Escape") setIsEditingName(false);
                                 }}
                                 onBlur={() => {
-                                    const newName = editName.trim() || conversation.phone_number;
-                                    if (newName !== conversation.contact_name) {
-                                        onRenameContact(conversation.id, newName);
-                                    }
+                                    const trimmed = editName.trim();
+                                    onRenameContact(conversation.id, trimmed || null);
                                     setIsEditingName(false);
                                 }}
                                 className="font-bold text-sm text-[#0d1f35] leading-tight bg-slate-50 border border-teal/30 rounded-md px-2 py-0.5 w-full focus:outline-none focus:ring-2 focus:ring-teal/20 placeholder:text-slate-300 placeholder:font-normal"
                             />
                         ) : (
                             <p className="font-bold text-sm text-[#0d1f35] leading-tight truncate">
-                                {conversation.contact_name}
+                                {displayName}
                             </p>
                         )}
                         <p className="text-xs text-[#5e7a9a] leading-tight">

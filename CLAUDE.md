@@ -126,6 +126,41 @@ src/
 | `physical_resources` | Salas y equipos (chamber, box) |
 | `schedule_blocks` | Bloques de disponibilidad semanal |
 | `schedule_exceptions` | Bloqueos, feriados, ausencias |
+| `whatsapp_conversations` | Conversaciones WhatsApp (`contact_name`=pushName, `custom_name`=nombre del admin) |
+| `whatsapp_messages` | Mensajes individuales de WhatsApp |
+| `whatsapp_bot_settings` | Configuración global del bot Kini |
+
+## Acceso a Infraestructura (VPS Hostinger)
+
+Todos los servicios de backend (Supabase, N8N, Evolution API, EasyPanel) corren en el VPS de Hostinger.
+Para intervenir directamente (SQL, Docker, configs), usar SSH:
+
+```bash
+ssh VPSHostinger    # Alias configurado en ~/.ssh/config → root@187.77.229.36
+```
+
+### Comandos útiles via SSH
+
+| Tarea | Comando |
+|-------|---------|
+| SQL en Supabase | `ssh VPSHostinger "docker exec -i supabase-db-1 psql -U postgres -c 'TU SQL AQUI'"` |
+| Ver containers | `ssh VPSHostinger "docker ps --format '{{.Names}}'"` |
+| Logs de un container | `ssh VPSHostinger "docker logs --tail 50 CONTAINER_NAME"` |
+| Restart container | `ssh VPSHostinger "docker restart CONTAINER_NAME"` |
+
+### Containers principales
+
+| Container | Servicio |
+|-----------|----------|
+| `supabase-db-1` | PostgreSQL (base de datos principal) |
+| `supabase-rest-1` | PostgREST API |
+| `supabase-auth-1` | Auth server |
+| `supabase-realtime-1` | Realtime subscriptions |
+| `supabase-kong-1` | API Gateway |
+| `supabase-studio-1` | Dashboard UI |
+| `supabase-storage-1` | File storage |
+
+**IMPORTANTE**: Siempre usar SSH para operaciones de BD, Docker, N8N o Evolution API. No intentar usar MCP de Supabase ni RPC — el acceso directo es via SSH.
 
 ## URLs de Servicios
 
