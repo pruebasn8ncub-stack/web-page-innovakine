@@ -158,7 +158,7 @@ export default function ConversationList({
 
                     {/* Row 2: Bot status + Atención */}
                     <div className="flex items-center gap-1.5">
-                        <span className="text-[0.6rem] text-[#5e7a9a]/60 font-medium uppercase tracking-wider mr-0.5">Bot</span>
+                        <Bot className="w-3.5 h-3.5 text-[#5e7a9a]/50 mr-0.5" />
                         {(["active", "paused"] as const).map((v) => {
                             const isSelected = botFilter === v && !showNeedsHuman;
                             return (
