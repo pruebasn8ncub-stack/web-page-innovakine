@@ -216,7 +216,7 @@ export default function MessageInput({ onSend, isBotActive = false, disabled = f
                                 Enviar este mensaje puede desactivar el chatbot para esta conversacion. Elige como proceder.
                             </p>
 
-                            <div className="flex gap-3 justify-end flex-wrap">
+                            <div className="flex gap-3 justify-end">
                                 <button
                                     type="button"
                                     onClick={() => setShowBotAlert(false)}
@@ -227,7 +227,7 @@ export default function MessageInput({ onSend, isBotActive = false, disabled = f
                                 <button
                                     type="button"
                                     onClick={handleSendWithoutPause}
-                                    className="px-5 py-2.5 rounded-xl text-sm font-medium text-[#0d1f35] border border-slate-200 hover:border-slate-300 transition-all"
+                                    className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-teal to-blue-500 hover:shadow-lg shadow-md transition-all"
                                 >
                                     Enviar sin desactivar
                                 </button>
