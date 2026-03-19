@@ -412,7 +412,11 @@ export default function WhatsAppPage() {
         message: string
     ) => {
         if (!selectedId) return;
-        await apiFetch("/api/whatsapp/bot-control", {
+        // Optimistic update
+        setConversations((prev) =>
+            prev.map((c) => c.id === selectedId ? { ...c, is_bot_paused: true } : c)
+        );
+        const res = await apiFetch("/api/whatsapp/bot-control", {
             method: "POST",
             body: JSON.stringify({
                 action: "pause",
@@ -421,6 +425,11 @@ export default function WhatsAppPage() {
                 transitionMessage: message,
             }),
         });
+        if (!res.ok) {
+            setConversations((prev) =>
+                prev.map((c) => c.id === selectedId ? { ...c, is_bot_paused: false } : c)
+            );
+        }
     };
 
     const handleBotResume = async (
@@ -428,7 +437,11 @@ export default function WhatsAppPage() {
         message: string
     ) => {
         if (!selectedId) return;
-        await apiFetch("/api/whatsapp/bot-control", {
+        // Optimistic update
+        setConversations((prev) =>
+            prev.map((c) => c.id === selectedId ? { ...c, is_bot_paused: false } : c)
+        );
+        const res = await apiFetch("/api/whatsapp/bot-control", {
             method: "POST",
             body: JSON.stringify({
                 action: "resume",
@@ -437,6 +450,11 @@ export default function WhatsAppPage() {
                 transitionMessage: message,
             }),
         });
+        if (!res.ok) {
+            setConversations((prev) =>
+                prev.map((c) => c.id === selectedId ? { ...c, is_bot_paused: true } : c)
+            );
+        }
     };
 
     const handleResolveTicket = async (conversationId: string) => {
@@ -465,13 +483,20 @@ export default function WhatsAppPage() {
         const action = botSettings.global_pause
             ? "global_resume"
             : "global_pause";
-        await apiFetch("/api/whatsapp/bot-control", {
-            method: "POST",
-            body: JSON.stringify({ action }),
-        });
+        // Optimistic update — show change immediately
         setBotSettings((prev) =>
             prev ? { ...prev, global_pause: !prev.global_pause } : prev
         );
+        const res = await apiFetch("/api/whatsapp/bot-control", {
+            method: "POST",
+            body: JSON.stringify({ action }),
+        });
+        // Revert on failure
+        if (!res.ok) {
+            setBotSettings((prev) =>
+                prev ? { ...prev, global_pause: !prev.global_pause } : prev
+            );
+        }
     };
 
     const handleLoadMore = async () => {
