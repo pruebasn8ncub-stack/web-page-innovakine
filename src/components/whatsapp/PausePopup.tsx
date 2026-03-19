@@ -44,19 +44,11 @@ export default function PausePopup({ isOpen, onClose, onPause, defaultMessage }:
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h2 className="text-lg font-bold text-[#0d1f35] mb-1">
-                            Pausar chatbot para esta conversacion
+                            Pausar Kini en esta conversacion
                         </h2>
-                        <p className="text-sm text-[#5e7a9a] mb-5">
-                            Deseas enviar un mensaje de transicion al cliente?
+                        <p className="text-sm text-[#5e7a9a] mb-6">
+                            El chatbot dejara de responder en este chat. Podras reactivarlo cuando quieras.
                         </p>
-
-                        <textarea
-                            ref={textareaRef}
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            rows={4}
-                            className="w-full resize-none bg-[#f5f8fc] border-0 rounded-2xl px-4 py-3 text-sm text-[#0d1f35] focus:outline-none focus:ring-2 focus:ring-teal/20 focus:bg-white transition-all mb-6"
-                        />
 
                         <div className="flex gap-3 justify-end">
                             <button
@@ -69,16 +61,9 @@ export default function PausePopup({ isOpen, onClose, onPause, defaultMessage }:
                             <button
                                 type="button"
                                 onClick={() => onPause(false, message)}
-                                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-teal to-blue-500 hover:shadow-lg shadow-md transition-all"
-                            >
-                                Solo pausar
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => onPause(true, message)}
                                 className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-red-500 to-rose-500 hover:shadow-lg shadow-md transition-all"
                             >
-                                Pausar y enviar
+                                Pausar
                             </button>
                         </div>
                     </motion.div>
